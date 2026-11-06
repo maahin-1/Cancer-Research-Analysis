@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Patient Intake — F*CK CANCER</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #ffffff;
+      --surface: #f8f9fa;
+      --surface2: #f1f3f4;
+      --border: #e8eaed;
+      --border-strong: #dadce0;
+      --accent: #1a73e8;
+      --accent-light: rgba(26,115,232,0.08);
+      --accent2: #6366f1;
+      --accent3: #34a853;
+      --accent3-light: rgba(52,168,83,0.09);
+      --warn: #fbbc05;
+      --warn-dark: #b07000;
+      --danger: #ea4335;
+      --text: #202124;
+      --muted: #5f6368;
+      --subtle: #9aa0a6;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      line-height: 1.6;
+    }
+
+    .site-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      background: #fff;
+      border-bottom: 1px solid var(--border-strong);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      padding: 0 2.5rem; height: 68px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .site-nav::before {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--accent) 0%, var(--accent2) 50%, var(--accent3) 100%);
+    }
+    .nav-brand {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 1.1rem; font-weight: 900; color: var(--text); text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+    .nav-brand-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .nav-brand-icon svg { width: 18px; height: 18px; }
+    .nav-brand-text { display: flex; flex-direction: column; gap: 1px; }
+    .nav-brand-name { font-size: 0.95rem; font-weight: 900; color: var(--text); line-height: 1; }
+    .nav-brand-sub { font-size: 0.65rem; font-weight: 600; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; line-height: 1; }
+    .dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 8px rgba(26,115,232,0.5);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.6;transform:scale(1.2)} }
+    .nav-right { display: flex; align-items: center; gap: 1rem; }
+    .nav-step-indicator {
+      font-size: 0.75rem; font-weight: 600; color: var(--muted);
+      background: var(--surface); border: 1px solid var(--border);
+      padding: 0.3rem 0.75rem; border-radius: 20px;
+    }
+    .nav-step-indicator span { color: var(--accent); font-weight: 700; }
+    .nav-back {
+      color: var(--muted); text-decoration: none; font-size: 0.825rem;
+      display: flex; align-items: center; gap: 0.4rem;
+      font-weight: 600; transition: all 0.2s;
+      padding: 0.45rem 1rem; border-radius: 20px;
+      border: 1.5px solid var(--border-strong);
+      background: var(--bg);
+    }
+    .nav-back:hover { color: var(--accent); border-color: var(--accent); background: var(--accent-light); }
+    .nav-back svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+    .page { padding: 5.5rem 2rem 4rem; max-width: 860px; margin: 0 auto; }
+
+    .page-header { margin-bottom: 3rem; }
+    .page-tag {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem;
+      font-family: 'DM Mono', monospace;
+    }
+    .page-title {
+      font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 800;
+      letter-spacing: -0.02em; margin-bottom: 0.75rem; color: var(--text);
+    }
+    .page-subtitle { font-size: 1rem; color: var(--muted); max-width: 600px; }
+
+    /* PROGRESS */
+    .progress-bar {
+      display: flex; margin-bottom: 3rem;
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 16px; overflow: hidden; padding: 1rem 1.25rem;
+      gap: 0.5rem; align-items: center;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    /* li wrappers: non-divider ones grow to fill; dividers are fixed-width */
+    .progress-bar > li { list-style: none; }
+    .progress-bar > li:not(.progress-divider) { flex: 1; display: flex; }
+    .progress-bar > li.progress-divider { flex-shrink: 0; width: 20px; height: 1px; background: var(--border); }
+    .progress-step {
+      display: flex; align-items: center; gap: 0.5rem;
+      width: 100%; cursor: pointer; padding: 0.5rem 0.75rem; border-radius: 10px;
+      transition: background 0.2s;
+      background: none; border: none; font-family: inherit; text-align: left;
+    }
+    .progress-step:hover { background: var(--accent-light); }
+    .progress-step.active { background: var(--accent-light); }
+    /* DONE: green circle, number hidden, checkmark shown */
+    .progress-step.done .step-circle {
+      background: var(--accent3); border-color: var(--accent3);
+      color: transparent; font-size: 0;
+    }
+    .progress-step.done .step-circle::after {
+      content: '✓'; color: #fff; font-size: 0.75rem; font-weight: 700;
+    }
+    .progress-step.done .step-label { color: var(--accent3); }
+    .step-circle {
+      width: 28px; height: 28px; border-radius: 50%;
+      border: 2px solid var(--border-strong);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; font-weight: 700; color: var(--muted);
+      flex-shrink: 0; transition: all 0.3s; position: relative;
+    }
+    .progress-step.active .step-circle { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+    .step-label { font-size: 0.8rem; font-weight: 600; color: var(--muted); white-space: nowrap; }
+    .progress-step.active .step-label { color: var(--accent); font-weight: 700; }
+    .progress-divider { width: 20px; height: 1px; background: var(--border); flex-shrink: 0; }
+    @media (max-width: 540px) { .step-label { display: none; } .progress-step { justify-content: center; } }
+
+    /* FORM SECTIONS */
+    .form-section { display: none; }
+    .form-section.active { display: block; animation: fadeSlide 0.3s ease; }
+    @keyframes fadeSlide { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    .section-card {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 16px; padding: 2rem; margin-bottom: 1.5rem;
+      position: relative; overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .section-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 16px 16px 0 0;
+    }
+    .section-card-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.4rem; color: var(--text); }
+    .section-card-desc { font-size: 0.85rem; color: var(--muted); margin-bottom: 1.75rem; }
+
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+    .form-grid.single { grid-template-columns: 1fr; }
+    @media (max-width: 640px) { .form-grid { grid-template-columns: 1fr; } }
+
+    .field { display: flex; flex-direction: column; gap: 0.4rem; }
+    .field.full { grid-column: 1 / -1; }
+    label { font-size: 0.825rem; font-weight: 600; color: var(--muted); }
+    label .req { color: var(--accent); margin-left: 2px; }
+
+    input[type="text"], input[type="email"], input[type="date"], select, textarea {
+      background: var(--bg); border: 1px solid var(--border-strong);
+      border-radius: 10px; padding: 0.65rem 0.875rem;
+      font-size: 0.9rem; color: var(--text);
+      transition: border-color 0.2s, box-shadow 0.2s;
+      width: 100%; font-family: inherit;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none; border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(26,115,232,0.12);
+    }
+    select option { background: var(--bg); color: var(--text); }
+    textarea { resize: vertical; min-height: 80px; }
+
+    /* CHECKBOXES */
+    .check-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    @media (max-width: 500px) { .check-grid { grid-template-columns: 1fr; } }
+    .check-item {
+      display: flex; align-items: flex-start; gap: 0.75rem;
+      background: var(--surface); border: 1.5px solid var(--border);
+      border-radius: 12px; padding: 0.875rem;
+      cursor: pointer; transition: border-color 0.2s, background 0.2s;
+    }
+    .check-item:hover { border-color: var(--accent); background: var(--bg); }
+    .check-item input[type="checkbox"] { display: none; }
+    .check-box {
+      width: 20px; height: 20px; border-radius: 6px;
+      border: 2px solid var(--border-strong); flex-shrink: 0; margin-top: 1px;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s;
+    }
+    .check-item:has(input:checked) .check-box { background: var(--accent); border-color: var(--accent); }
+    .check-item:has(input:checked) .check-box::after { content: '✓'; color: #fff; font-size: 0.7rem; font-weight: 700; }
+    .check-item:has(input:checked) { border-color: var(--accent); background: var(--accent-light); }
+    .check-text { flex: 1; }
+    .check-title { font-size: 0.875rem; font-weight: 600; color: var(--text); }
+    .check-sub { font-size: 0.775rem; color: var(--muted); margin-top: 0.15rem; }
+
+    /* UPLOAD ZONES */
+    .upload-zone {
+      border: 2px dashed var(--border-strong); border-radius: 14px;
+      padding: 2rem; text-align: center; cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      position: relative; background: var(--surface);
+    }
+    .upload-zone:hover, .upload-zone.drag { border-color: var(--accent); background: var(--accent-light); }
+    .upload-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+    .upload-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+    .upload-title { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.3rem; color: var(--text); }
+    .upload-desc { font-size: 0.8rem; color: var(--muted); }
+    .upload-formats { margin-top: 0.5rem; display: flex; gap: 0.4rem; justify-content: center; flex-wrap: wrap; }
+    .fmt {
+      font-size: 0.7rem; padding: 0.18rem 0.55rem; border-radius: 20px;
+      background: rgba(99,102,241,0.1); color: var(--accent2); font-weight: 600;
+      font-family: 'DM Mono', monospace;
+    }
+
+    /* HLA INPUT */
+    .hla-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; }
+    @media (max-width: 500px) { .hla-grid { grid-template-columns: 1fr 1fr; } }
+    .hla-field input { font-family: 'DM Mono', monospace; font-size: 0.85rem; }
+    .hla-label { font-size: 0.75rem; font-weight: 700; color: var(--accent2); margin-bottom: 0.3rem; font-family: 'DM Mono', monospace; }
+
+    /* RANGE */
+    .range-field { display: flex; flex-direction: column; gap: 0.5rem; }
+    .range-header { display: flex; justify-content: space-between; align-items: center; }
+    .range-value { font-size: 0.875rem; font-weight: 700; color: var(--accent); }
+    input[type="range"] {
+      -webkit-appearance: none; width: 100%; height: 4px;
+      background: var(--border-strong); border-radius: 2px; outline: none;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%;
+      background: var(--accent); cursor: pointer;
+      box-shadow: 0 2px 6px rgba(26,115,232,0.4);
+    }
+
+    /* INFO BOX */
+    .info-box {
+      background: var(--accent-light); border: 1px solid rgba(26,115,232,0.2);
+      border-radius: 12px; padding: 1rem 1.25rem;
+      display: flex; gap: 0.75rem; align-items: flex-start;
+      margin-bottom: 1.25rem;
+    }
+    .info-box-icon { font-size: 1rem; flex-shrink: 0; margin-top: 2px; }
+    .info-box-text { font-size: 0.825rem; color: var(--muted); line-height: 1.6; }
+    .info-box-text strong { color: var(--accent); }
+
+    .warn-box {
+      background: rgba(251,188,5,0.08); border: 1px solid rgba(251,188,5,0.3);
+      border-radius: 12px; padding: 1rem 1.25rem;
+      display: flex; gap: 0.75rem; align-items: flex-start;
+      margin-bottom: 1.25rem;
+    }
+    .warn-box-text { font-size: 0.825rem; color: var(--muted); line-height: 1.6; }
+    .warn-box-text strong { color: var(--warn-dark); }
+
+    /* NAVIGATION BUTTONS */
+    .form-nav {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border);
+    }
+    .btn-back {
+      background: transparent; color: var(--muted);
+      border: 1.5px solid var(--border-strong); padding: 0.7rem 1.5rem;
+      border-radius: 24px; font-size: 0.9rem; font-weight: 600;
+      cursor: pointer; transition: all 0.2s; font-family: inherit;
+    }
+    .btn-back:hover { border-color: var(--text); color: var(--text); }
+    .btn-next {
+      background: var(--accent); color: #fff;
+      border: none; padding: 0.7rem 2rem;
+      border-radius: 24px; font-size: 0.9rem; font-weight: 600;
+      cursor: pointer; transition: all 0.2s; font-family: inherit;
+      box-shadow: 0 2px 8px rgba(26,115,232,0.35);
+    }
+    .btn-next:hover { background: #1558b0; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(26,115,232,0.4); }
+    .btn-submit {
+      background: var(--accent3); color: #fff;
+      border: none; padding: 0.7rem 2rem;
+      border-radius: 24px; font-size: 0.9rem; font-weight: 600;
+      cursor: pointer; transition: all 0.2s; font-family: inherit;
+      box-shadow: 0 2px 8px rgba(52,168,83,0.35);
+    }
+    .btn-submit:hover { background: #2d8f46; transform: translateY(-1px); }
+
+    /* REVIEW PANEL */
+    .review-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .review-item { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1rem; }
+    .review-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 0.3rem; font-family: 'DM Mono', monospace; }
+    .review-value { font-size: 0.9rem; color: var(--text); font-weight: 500; }
+    .review-value.missing { color: var(--subtle); font-style: italic; }
+
+    /* READINESS SCORE */
+    .readiness-card {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 16px; padding: 2rem; text-align: center; margin-bottom: 1.5rem;
+      position: relative; overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .readiness-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent3));
+      border-radius: 16px 16px 0 0;
+    }
+    .readiness-score { font-size: 4rem; font-weight: 900; line-height: 1; margin-bottom: 0.5rem; }
+    .readiness-score.high { color: var(--accent3); }
+    .readiness-score.med { color: var(--warn-dark); }
+    .readiness-score.low { color: var(--danger); }
+    .readiness-label { font-size: 0.9rem; color: var(--muted); }
+    .readiness-bar {
+      height: 8px; background: var(--surface2); border-radius: 4px;
+      margin: 1.5rem 0 0.5rem; overflow: hidden;
+    }
+    .readiness-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--accent), var(--accent3)); transition: width 1s ease; }
+
+    /* SUCCESS STATE */
+    .success-screen { display: none; text-align: center; padding: 4rem 2rem; }
+    .success-screen.show { display: block; animation: fadeSlide 0.5s ease; }
+    .success-icon { font-size: 4rem; margin-bottom: 1.5rem; }
+    .success-title { font-size: 2rem; font-weight: 800; margin-bottom: 1rem; color: var(--text); }
+    .success-desc { font-size: 1rem; color: var(--muted); max-width: 500px; margin: 0 auto 2rem; }
+    .success-next-steps {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 16px; padding: 2rem; max-width: 500px; margin: 0 auto;
+      text-align: left;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .success-step { display: flex; align-items: flex-start; gap: 1rem; padding: 0.75rem 0; border-bottom: 1px solid var(--border); }
+    .success-step:last-child { border-bottom: none; }
+    .success-step-num {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--accent-light); color: var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; font-weight: 700; flex-shrink: 0;
+    }
+    .success-step-text { font-size: 0.875rem; color: var(--muted); }
+    .success-step-text strong { color: var(--text); display: block; margin-bottom: 0.1rem; }
+
+    /* ACCESSIBILITY */
+    .skip-link {
+      position: absolute; top: -100%; left: 1rem;
+      background: var(--accent); color: #fff;
+      padding: 0.5rem 1rem; border-radius: 0 0 8px 8px;
+      font-size: 0.875rem; font-weight: 600; text-decoration: none;
+      z-index: 9999; transition: top 0.2s;
+    }
+    .skip-link:focus { top: 0; }
+    .visually-hidden {
+      position: absolute; width: 1px; height: 1px;
+      padding: 0; margin: -1px; overflow: hidden;
+      clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    }
+    :focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+    input:focus-visible, select:focus-visible, textarea:focus-visible {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(26,115,232,0.18);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<nav class="site-nav" aria-label="Main navigation">
+  <a class="nav-brand" href="index.html" aria-label="F*CK CANCER — home">
+    <div class="nav-brand-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+      </svg>
+    </div>
+    <div class="nav-brand-text">
+      <span class="nav-brand-name">F*CK CANCER</span>
+      <span class="nav-brand-sub">Personalized Oncology Pipeline</span>
+    </div>
+  </a>
+  <div class="nav-right">
+    <div class="nav-step-indicator" aria-live="polite" id="navStepIndicator">
+      Step <span id="navStepNum">1</span> of 5
+    </div>
+    <a class="nav-back" href="index.html" aria-label="Back to Overview">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+      Back to Overview
+    </a>
+  </div>
+</nav>
+
+<main id="main-content">
+<div class="page">
+  <div class="page-header">
+    <div class="page-tag">Patient Intake</div>
+    <h1 class="page-title">Tell Us About Your Case</h1>
+    <p class="page-subtitle">
+      We'll use this to assess pipeline readiness and generate a personalized analysis plan.
+      Takes about 5 minutes.
+    </p>
+  </div>
+
+  <!-- PROGRESS -->
+  <nav aria-label="Form steps" id="progressBar">
+    <ol class="progress-bar" role="list" style="list-style:none;">
+      <li>
+        <button type="button" class="progress-step active" data-step="0" onclick="goTo(0)" aria-current="step" aria-label="Step 1: Diagnosis (current)">
+          <span class="step-circle" aria-hidden="true">1</span>
+          <span class="step-label">Diagnosis</span>
+        </button>
+      </li>
+      <li class="progress-divider" aria-hidden="true"></li>
+      <li>
+        <button type="button" class="progress-step" data-step="1" onclick="goTo(1)" aria-label="Step 2: Your Data">
+          <span class="step-circle" aria-hidden="true">2</span>
+          <span class="step-label">Your Data</span>
+        </button>
+      </li>
+      <li class="progress-divider" aria-hidden="true"></li>
+      <li>
+        <button type="button" class="progress-step" data-step="2" onclick="goTo(2)" aria-label="Step 3: Upload Files">
+          <span class="step-circle" aria-hidden="true">3</span>
+          <span class="step-label">Upload Files</span>
+        </button>
+      </li>
+      <li class="progress-divider" aria-hidden="true"></li>
+      <li>
+        <button type="button" class="progress-step" data-step="3" onclick="goTo(3)" aria-label="Step 4: HLA and Goals">
+          <span class="step-circle" aria-hidden="true">4</span>
+          <span class="step-label">HLA & Goals</span>
+        </button>
+      </li>
+      <li class="progress-divider" aria-hidden="true"></li>
+      <li>
+        <button type="button" class="progress-step" data-step="4" onclick="goTo(4)" aria-label="Step 5: Review">
+          <span class="step-circle" aria-hidden="true">5</span>
+          <span class="step-label">Review</span>
+        </button>
+      </li>
+    </ol>
+  </nav>
+
+  <form id="intakeForm" onsubmit="handleSubmit(event)">
+
+    <!-- STEP 1: DIAGNOSIS -->
+    <div class="form-section active" id="step-0">
+      <div class="section-card">
+        <div class="section-card-title">About Your Diagnosis</div>
+        <div class="section-card-desc">Basic clinical information that guides target discovery and treatment selection.</div>
+
+        <div class="form-grid">
+          <div class="field">
+            <label>First Name <span class="req">*</span></label>
+            <input type="text" id="firstName" placeholder="Your first name" required />
+          </div>
+          <div class="field">
+            <label>Email Address <span class="req">*</span></label>
+            <input type="email" id="email" placeholder="For your report" required />
+          </div>
+          <div class="field">
+            <label>Cancer Type <span class="req">*</span></label>
+            <select id="cancerType" required onchange="updateReadiness()">
+              <option value="">Select cancer type</option>
+              <option>Osteosarcoma</option>
+              <option>Lung (NSCLC)</option>
+              <option>Lung (SCLC)</option>
+              <option>Breast</option>
+              <option>Colorectal</option>
+              <option>Melanoma</option>
+              <option>Pancreatic</option>
+              <option>Glioblastoma</option>
+              <option>Ovarian</option>
+              <option>Bladder</option>
+              <option>Renal Cell Carcinoma</option>
+              <option>Prostate</option>
+              <option>Lymphoma</option>
+              <option>Leukemia</option>
+              <option>Other (specify below)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Stage at Current Assessment</label>
+            <select id="stage">
+              <option value="">Select stage</option>
+              <option>Stage I</option>
+              <option>Stage II</option>
+              <option>Stage III</option>
+              <option>Stage IV / Metastatic</option>
+              <option>Recurrent / Refractory</option>
+              <option>Unknown</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Diagnosis Date (approximate)</label>
+            <input type="date" id="diagnosisDate" />
+          </div>
+          <div class="field">
+            <label>Age at Diagnosis</label>
+            <input type="text" id="age" placeholder="e.g. 45" />
+          </div>
+          <div class="field full">
+            <label>Primary tumor location / any metastatic sites</label>
+            <input type="text" id="tumorLocation" placeholder="e.g. T5 vertebra, lung metastases" />
+          </div>
+          <div class="field full">
+            <label>Treatments received so far (surgery, chemo, radiation, etc.)</label>
+            <textarea id="priorTreatments" placeholder="e.g. Surgery Dec 2022, cisplatin + doxorubicin 4 cycles, SBRT Jan–Feb 2023..."></textarea>
+          </div>
+          <div class="field full">
+            <label>Current treatment status</label>
+            <select id="treatmentStatus">
+              <option value="">Select status</option>
+              <option>Newly diagnosed — not yet treated</option>
+              <option>Currently on standard-of-care treatment</option>
+              <option>In remission after treatment</option>
+              <option>Recurrence — standard options exhausted</option>
+              <option>Partial response — looking to augment</option>
+              <option>Active disease — seeking parallel options</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-nav">
+        <div></div>
+        <button type="button" class="btn-next" onclick="next()">Continue → Your Data</button>
+      </div>
+    </div>
+
+    <!-- STEP 2: DATA AVAILABILITY -->
+    <div class="form-section" id="step-1">
+      <div class="info-box">
+        <span class="info-box-icon">ℹ️</span>
+        <div class="info-box-text">
+          <strong>What you check here determines your pipeline score.</strong> Even partial data is useful —
+          the pipeline gracefully falls back when data is missing. More data = more accurate recommendations.
+        </div>
+      </div>
+
+      <div class="section-card">
+        <div class="section-card-title">Genomic Sequencing — What Do You Have?</div>
+        <div class="section-card-desc">Check everything that applies. Having raw files (not just PDF reports) is required to run the pipeline.</div>
+        <div class="check-grid" id="genomicsChecks">
+          <label class="check-item">
+            <input type="checkbox" name="genomics" value="wgs" onchange="updateReadiness()" />
+            <div class="check-box"></div>
+            <div class="check-text">
+              <div class="check-title">Whole Genome Sequencing (WGS)</div>
+              <div class="check-sub">Raw FASTQ or VCF files</div>
+            </div>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" name="genomics" value="wes" onchange="updateReadiness()" />
+            <div class="check-box"></div>
+            <div class="check-text">
+              <div class="check-title">Whole Exome Sequencing (WES)</div>
+              <div class="check-sub">Tumor + matched normal preferred</div>
+            </div>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" name="genomics" value="panel" onchange="updateReadiness()" />
+            <div class="check-box"></div>
+            <div class="check-text">
+              <div class="check-title">Gene Panel (e.g. Foundation One, Tempus xT)</div>
+              <div class="check-sub">Limited but better than nothing</div>
+            </div>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" name="genomics" value="rnaseq" onchange="updateReadiness()" />
+            <div class="check-box"></div>
+            <div class="check-text">
+              <div class="check-title">Bulk RNA-seq</div>
+              <div class="check-sub">TPM/count matrix from tumor tissue</div>
+            </div>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" name="genomics" value="scrna" onchange="updateReadiness()" />
+            <div class="check-box"></div>
+            <div class="check-text">
+              <div class="check-title">Single-Cell RNA-seq (scRNA-seq)</div>
+              <div class="check-sub">H5AD, 10x MTX, or RDS format</div>
+            </div>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" name="genomics" value="ctdna" onchange="updateReadiness()" />
+            <div class="check-box"></div>
+            <div class="check-text">
+              <div class="check-title">Liquid Biopsy / ctDNA Results</div>
+              <div class="check-sub">Signatera, Northstar, or Personalis</div>
+            </div>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" name="genomics" value="hla" onchange="updateReadiness()" />
+            <div class="check-box"></div>
+            <div class="check-text">
+              <div class="check-title">HLA Typing Results</div>
+              <div class="check-sub">Class I alleles (A, B, C)</div>
+            </div>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" name="genomics" value="flowcyto" onchange="updateReadiness()" />
+            <div class="check-box"></div>
+            <div class="check-text">
+              <div class="check-title">Flow Cytometry / Immune Panel</div>
+              <div class="check-sub">T/B cell subsets over time</div>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <div class="section-card">
+        <div class="section-card-title">Imaging & Tissue</div>
+        <div class="section-card-desc">Novel PET tracers and cryopreserved tissue unlock additional treatment arms.</div>
+        <div class="check-grid">
+          <label class="check-item">
+            <input type="checkbox" name="imaging" value="pet_fdg" onchange="updateReadiness()" />
+            <div class="check-box"></div>
+            <div class="check-text">
+              <div class="check-title">18F-FDG PET/CT</div>
+              <div class="check-sub">Standard metabolic imaging</div>
+            </div>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" name="imaging" value="pet_fap" onchange="updateReadiness()" />
+            <div class="check-box"></div>
+            <div class="check-text">
+              <div class="check-title">68Ga-FAP PET</div>
+              <div class="check-sub">Key for radioligand eligibility</div>
+            </div>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" name="imaging" value="cryo" onchange="updateReadiness()" />
+            <div class="check-box"></div>
+            <div class="check-text">
+              <div class="check-title">Cryopreserved Biopsy Tissue</div>
+              <div class="check-sub">Required for scRNA-seq</div>
+            </div>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" name="imaging" value="ihc" onchange="updateReadiness()" />
+            <div class="check-box"></div>
+            <div class="check-text">
+              <div class="check-title">IHC / Immune Staining (CD3, CD8, PD-L1)</div>
+              <div class="check-sub">Tumor microenvironment status</div>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-nav">
+        <button type="button" class="btn-back" onclick="prev()">← Back</button>
+        <button type="button" class="btn-next" onclick="next()">Continue → Upload Files</button>
+      </div>
+    </div>
+
+    <!-- STEP 3: FILE UPLOAD -->
+    <div class="form-section" id="step-2">
+      <div class="warn-box">
+        <span style="font-size:1rem; flex-shrink:0;">⚠️</span>
+        <div class="warn-box-text">
+          <strong>Your data stays private.</strong> Files uploaded here are processed locally.
+          Nothing is sent to third-party servers. You can also skip uploads and provide
+          Google Cloud / S3 paths if your data is already in the cloud.
+        </div>
+      </div>
+
+      <div class="section-card">
+        <div class="section-card-title">Variant Files (VCF)</div>
+        <div class="section-card-desc">Somatic variant calls from WGS or WES. Required for neoantigen prediction.</div>
+        <div class="upload-zone" id="vcfZone">
+          <input type="file" id="vcfFile" accept=".vcf,.vcf.gz,.bcf" multiple onchange="handleFileSelect(this, 'vcfList')" />
+          <div class="upload-icon">🧬</div>
+          <div class="upload-title">Drop VCF files here or click to browse</div>
+          <div class="upload-desc">Somatic VCF preferred. Tumor-normal paired if available.</div>
+          <div class="upload-formats">
+            <span class="fmt">.vcf</span>
+            <span class="fmt">.vcf.gz</span>
+            <span class="fmt">.bcf</span>
+          </div>
+        </div>
+        <div id="vcfList" style="margin-top: 0.75rem;"></div>
+        <div style="margin-top: 1.25rem;">
+          <label style="font-size:0.825rem; font-weight:600; color:var(--muted); display:block; margin-bottom:0.4rem;">
+            Or provide a Google Cloud / S3 path
+          </label>
+          <input type="text" id="vcfPath" placeholder="gs://your-bucket/variants/ or s3://your-bucket/vcf/" />
+        </div>
+      </div>
+
+      <div class="section-card">
+        <div class="section-card-title">Single-Cell RNA-seq Data</div>
+        <div class="section-card-desc">For tumor target discovery. H5AD format preferred. RDS (Seurat) also accepted.</div>
+        <div class="upload-zone">
+          <input type="file" id="scrnaFile" accept=".h5ad,.rds,.h5,.gz" multiple onchange="handleFileSelect(this, 'scrnaList')" />
+          <div class="upload-icon">🔬</div>
+          <div class="upload-title">Drop scRNA-seq files here or click to browse</div>
+          <div class="upload-desc">H5AD from Scanpy/AnnData preferred. 10x MTX directory also works.</div>
+          <div class="upload-formats">
+            <span class="fmt">.h5ad</span>
+            <span class="fmt">.rds</span>
+            <span class="fmt">.h5</span>
+            <span class="fmt">matrix.mtx.gz</span>
+          </div>
+        </div>
+        <div id="scrnaList" style="margin-top: 0.75rem;"></div>
+        <div style="margin-top: 1.25rem;">
+          <label style="font-size:0.825rem; font-weight:600; color:var(--muted); display:block; margin-bottom:0.4rem;">
+            Or provide a cloud path
+          </label>
+          <input type="text" id="scrnaPath" placeholder="gs://your-bucket/scrna/" />
+        </div>
+      </div>
+
+      <div class="section-card">
+        <div class="section-card-title">RNA-seq Expression Data (optional)</div>
+        <div class="section-card-desc">Bulk RNA-seq counts matrix. Used to filter neoantigens to expressed genes only.</div>
+        <div class="upload-zone">
+          <input type="file" accept=".csv,.tsv,.h5,.txt" onchange="handleFileSelect(this, 'rnaseqList')" />
+          <div class="upload-icon">📊</div>
+          <div class="upload-title">Drop RNA-seq counts matrix here</div>
+          <div class="upload-desc">TPM or raw counts. Gene × Sample matrix.</div>
+          <div class="upload-formats">
+            <span class="fmt">.csv</span>
+            <span class="fmt">.tsv</span>
+            <span class="fmt">.h5</span>
+          </div>
+        </div>
+        <div id="rnaseqList" style="margin-top: 0.75rem;"></div>
+      </div>
+
+      <div class="form-nav">
+        <button type="button" class="btn-back" onclick="prev()">← Back</button>
+        <button type="button" class="btn-next" onclick="next()">Continue → HLA & Goals</button>
+      </div>
+    </div>
+
+    <!-- STEP 4: HLA & GOALS -->
+    <div class="form-section" id="step-3">
+      <div class="section-card">
+        <div class="section-card-title">HLA Alleles</div>
+        <div class="section-card-desc">
+          Your HLA type determines which neoantigen peptides can be presented to your T cells.
+          If you don't have this yet, the pipeline can try to derive it from WGS data.
+        </div>
+
+        <div class="info-box" style="margin-bottom: 1.25rem;">
+          <span class="info-box-icon">💡</span>
+          <div class="info-box-text">
+            Format: <strong>HLA-A*02:01</strong>. Find this in your genomic report or ask your oncologist.
+            You have 2 alleles per gene (one per chromosome).
+          </div>
+        </div>
+
+        <div class="hla-grid">
+          <div class="hla-field">
+            <div class="hla-label">HLA-A (allele 1)</div>
+            <input type="text" id="hlaA1" placeholder="HLA-A*02:01" />
+          </div>
+          <div class="hla-field">
+            <div class="hla-label">HLA-A (allele 2)</div>
+            <input type="text" id="hlaA2" placeholder="HLA-A*24:02" />
+          </div>
+          <div class="hla-field">
+            <div class="hla-label">HLA-B (allele 1)</div>
+            <input type="text" id="hlaB1" placeholder="HLA-B*07:02" />
+          </div>
+          <div class="hla-field">
+            <div class="hla-label">HLA-B (allele 2)</div>
+            <input type="text" id="hlaB2" placeholder="HLA-B*44:02" />
+          </div>
+          <div class="hla-field">
+            <div class="hla-label">HLA-C (allele 1)</div>
+            <input type="text" id="hlaC1" placeholder="HLA-C*07:02" />
+          </div>
+          <div class="hla-field">
+            <div class="hla-label">HLA-C (allele 2)</div>
+            <input type="text" id="hlaC2" placeholder="HLA-C*05:01" />
+          </div>
+        </div>
+
+        <div style="margin-top: 1rem;">
+          <label class="check-item" style="max-width: 400px;">
+            <input type="checkbox" id="hlaUnknown" onchange="toggleHLA(this)" />
+            <div class="check-box"></div>
+            <div class="check-text">
+              <div class="check-title">I don't have my HLA type yet</div>
+              <div class="check-sub">We'll derive it from your WGS data if available</div>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <div class="section-card">
+        <div class="section-card-title">Treatment Goals & Priorities</div>
+        <div class="section-card-desc">This shapes which treatment arms the pipeline emphasizes in the recommendation.</div>
+
+        <div class="form-grid" style="margin-bottom: 1.5rem;">
+          <div class="field full">
+            <label>Primary goal</label>
+            <select id="primaryGoal">
+              <option value="">Select your primary goal</option>
+              <option>Achieve remission / cure</option>
+              <option>Extend progression-free survival</option>
+              <option>Improve quality of life while managing disease</option>
+              <option>Prepare for surgery (tumor reduction)</option>
+              <option>Prevent recurrence after surgery</option>
+              <option>Maintain remission (currently responding)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="range-field" style="margin-bottom: 1.5rem;">
+          <div class="range-header">
+            <label style="margin:0;">Tolerance for experimental treatments</label>
+            <span class="range-value" id="riskLabel">Moderate</span>
+          </div>
+          <input type="range" id="riskTolerance" min="1" max="5" value="3"
+            oninput="updateRiskLabel(this.value)" />
+          <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:var(--muted); margin-top:0.35rem;">
+            <span>Conservative (approved only)</span>
+            <span>Aggressive (all available options)</span>
+          </div>
+        </div>
+
+        <div class="field full" style="margin-bottom: 1.25rem;">
+          <label>Geographic flexibility for treatment</label>
+          <select id="geography">
+            <option value="">Select flexibility</option>
+            <option>US only</option>
+            <option>US + Europe (willing to travel)</option>
+            <option>Worldwide (will go wherever needed)</option>
+            <option>Home country only (specify below)</option>
+          </select>
+        </div>
+
+        <div class="field full">
+          <label>Anything else we should know? Comorbidities, previous adverse events, specific concerns.</label>
+          <textarea id="additionalNotes" placeholder="e.g. Prior autoimmune history that may complicate checkpoint inhibitors, preference for oral agents, specific financial constraints..."></textarea>
+        </div>
+      </div>
+
+      <div class="form-nav">
+        <button type="button" class="btn-back" onclick="prev()">← Back</button>
+        <button type="button" class="btn-next" onclick="next()">Continue → Review</button>
+      </div>
+    </div>
+
+    <!-- STEP 5: REVIEW -->
+    <div class="form-section" id="step-4">
+      <div class="readiness-card" id="readinessCard" aria-live="polite" aria-label="Pipeline readiness score">
+        <div class="readiness-label" id="readinessLabel">Pipeline Readiness Score</div>
+        <div class="readiness-score" id="readinessScore" aria-describedby="readinessDesc">--</div>
+        <div class="readiness-bar" role="progressbar" aria-labelledby="readinessLabel" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="readinessBar">
+          <div class="readiness-fill" id="readinessFill" style="width:0%"></div>
+        </div>
+        <div style="font-size:0.85rem; color:var(--muted); margin-top:0.5rem;" id="readinessDesc">Complete the form to see your score</div>
+      </div>
+
+      <div class="section-card">
+        <div class="section-card-title">Review Your Information</div>
+        <div class="section-card-desc">Check that everything looks correct before submitting.</div>
+        <div class="review-grid" id="reviewGrid"></div>
+      </div>
+
+      <div class="section-card">
+        <div class="section-card-title">What Happens Next</div>
+        <div class="section-card-desc">After submission, here's the pipeline flow:</div>
+        <div style="display:flex; flex-direction:column; gap:0.75rem;">
+          <div style="display:flex; align-items:center; gap:0.75rem;">
+            <div style="width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0;"></div>
+            <span style="font-size:0.875rem; color:var(--muted);">Phase 1–2: Variant download and annotation (~1–2 hours)</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:0.75rem;">
+            <div style="width:8px;height:8px;border-radius:50%;background:var(--accent2);flex-shrink:0;"></div>
+            <span style="font-size:0.875rem; color:var(--muted);">Phase 3: scRNA-seq target discovery — checks for FAP, B7-H3, EphA2 and 8 others</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:0.75rem;">
+            <div style="width:8px;height:8px;border-radius:50%;background:var(--accent3);flex-shrink:0;"></div>
+            <span style="font-size:0.875rem; color:var(--muted);">Phase 4–5: Neoantigen prediction + structural validation via ESMFold (~$5–15 cloud cost)</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:0.75rem;">
+            <div style="width:8px;height:8px;border-radius:50%;background:var(--warn);flex-shrink:0;"></div>
+            <span style="font-size:0.875rem; color:var(--muted);">Phase 6: Full treatment recommendation report with regulatory access pathways</span>
+          </div>
+        </div>
+        <div style="margin-top:1.25rem; padding:1rem; background:var(--accent3-light); border:1px solid rgba(52,168,83,0.25); border-radius:10px; font-size:0.85rem; color:var(--muted);">
+          Estimated total time: <strong style="color:var(--accent3);">24–48 hours</strong>.
+          You'll receive your report at the email you provided.
+        </div>
+      </div>
+
+      <div class="warn-box">
+        <span style="font-size:1rem; flex-shrink:0;">⚠️</span>
+        <div class="warn-box-text">
+          <strong>Medical disclaimer:</strong> This pipeline generates decision-support information only.
+          All treatment decisions must be reviewed with a qualified oncologist familiar with your full
+          clinical history. Expanded access applications require physician co-signing.
+        </div>
+      </div>
+
+      <div class="form-nav">
+        <button type="button" class="btn-back" onclick="prev()">← Back</button>
+        <button type="submit" class="btn-submit">Submit & Start Pipeline →</button>
+      </div>
+    </div>
+
+  </form>
+
+  <!-- SUCCESS -->
+  <div class="success-screen" id="successScreen">
+    <div class="success-icon">🎉</div>
+    <h2 class="success-title">You're in the Queue</h2>
+    <p class="success-desc">
+      Your intake has been received. The pipeline will run over the next 24–48 hours
+      and your report will be sent to your email.
+    </p>
+    <div class="success-next-steps">
+      <div class="success-step">
+        <div class="success-step-num">1</div>
+        <div class="success-step-text"><strong>Check your email</strong> for a confirmation and your Case ID.</div>
+      </div>
+      <div class="success-step">
+        <div class="success-step-num">2</div>
+        <div class="success-step-text"><strong>If you haven't already</strong>, request cryopreserved tissue from your hospital — you'll need it for future scRNA-seq runs.</div>
+      </div>
+      <div class="success-step">
+        <div class="success-step-num">3</div>
+        <div class="success-step-text"><strong>Start the FDA Form 3926 process</strong> in parallel — approval takes 48 hours and you want it ready when the report arrives.</div>
+      </div>
+      <div class="success-step">
+        <div class="success-step-num">4</div>
+        <div class="success-step-text"><strong>Review the case study</strong> to understand what the targets and treatment layers mean before your report lands.</div>
+      </div>
+    </div>
+    <div style="margin-top: 2rem;">
+      <a href="index.html" style="color:var(--accent); text-decoration:none; font-weight:600;">← Back to Overview</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  let currentStep = 0;
+  const totalSteps = 5;
+
+  function goTo(step) {
+    const steps = document.querySelectorAll('.progress-step');
+    document.getElementById(`step-${currentStep}`).classList.remove('active');
+    steps[currentStep].classList.remove('active');
+    steps[currentStep].removeAttribute('aria-current');
+    if (step > currentStep) {
+      steps[currentStep].classList.add('done');
+    } else {
+      steps[currentStep].classList.remove('done');
+    }
+    currentStep = step;
+    document.getElementById(`step-${currentStep}`).classList.add('active');
+    steps[currentStep].classList.add('active');
+    steps[currentStep].setAttribute('aria-current', 'step');
+    const navNum = document.getElementById('navStepNum');
+    if (navNum) navNum.textContent = currentStep + 1;
+    if (step === 4) buildReview();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function next() { if (currentStep < totalSteps - 1) goTo(currentStep + 1); }
+  function prev() { if (currentStep > 0) goTo(currentStep - 1); }
+
+  const riskLabels = ['', 'Conservative', 'Cautious', 'Moderate', 'Open', 'Aggressive'];
+  function updateRiskLabel(v) {
+    document.getElementById('riskLabel').textContent = riskLabels[v];
+  }
+
+  function toggleHLA(cb) {
+    const inputs = document.querySelectorAll('.hla-field input');
+    inputs.forEach(i => { i.disabled = cb.checked; i.style.opacity = cb.checked ? '0.4' : '1'; });
+  }
+
+  function handleFileSelect(input, listId) {
+    const list = document.getElementById(listId);
+    list.innerHTML = '';
+    Array.from(input.files).forEach(f => {
+      const div = document.createElement('div');
+      div.style.cssText = 'display:flex;align-items:center;gap:0.5rem;padding:0.5rem 0.75rem;background:rgba(52,168,83,0.08);border:1px solid rgba(52,168,83,0.25);border-radius:8px;margin-top:0.4rem;font-size:0.825rem;color:#2d8f46;';
+      div.innerHTML = `<span>✓</span><span>${f.name}</span><span style="color:var(--subtle);margin-left:auto;">${(f.size/1024/1024).toFixed(1)} MB</span>`;
+      list.appendChild(div);
+    });
+  }
+
+  document.querySelectorAll('.upload-zone').forEach(zone => {
+    zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag'); });
+    zone.addEventListener('dragleave', () => zone.classList.remove('drag'));
+    zone.addEventListener('drop', () => zone.classList.remove('drag'));
+  });
+
+  function updateReadiness() {
+    const checks = document.querySelectorAll('input[type="checkbox"]:checked');
+    const hasCancerType = document.getElementById('cancerType').value !== '';
+    const baseScore = hasCancerType ? 15 : 0;
+    const weights = { wgs: 25, wes: 20, scrna: 20, rnaseq: 8, ctdna: 8, hla: 10, panel: 5, flowcyto: 4, pet_fap: 10, cryo: 8, pet_fdg: 4, ihc: 4 };
+    let score = baseScore;
+    checks.forEach(c => { score += (weights[c.value] || 3); });
+    score = Math.min(score, 100);
+
+    const el = document.getElementById('readinessScore');
+    const fill = document.getElementById('readinessFill');
+    const desc = document.getElementById('readinessDesc');
+    if (!el) return;
+
+    el.textContent = score + '%';
+    fill.style.width = score + '%';
+    el.className = 'readiness-score ' + (score >= 70 ? 'high' : score >= 40 ? 'med' : 'low');
+    const bar = document.getElementById('readinessBar');
+    if (bar) bar.setAttribute('aria-valuenow', score);
+
+    if (score >= 80) desc.textContent = 'Excellent — full pipeline can run. Expect high-confidence neoantigen candidates.';
+    else if (score >= 60) desc.textContent = 'Good — most pipeline phases will run. scRNA-seq or WGS data would improve confidence.';
+    else if (score >= 40) desc.textContent = 'Partial — pipeline will run with limitations. Missing data will use public reference datasets.';
+    else if (score >= 20) desc.textContent = 'Limited — pipeline will attempt with significant fallbacks. Prioritize getting WES + HLA typing.';
+    else desc.textContent = 'Insufficient data to run the pipeline. Start by requesting your sequencing data from your hospital.';
+  }
+
+  function buildReview() {
+    updateReadiness();
+    const grid = document.getElementById('reviewGrid');
+    const val = id => document.getElementById(id)?.value || '';
+    const checked = name => Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map(c => c.value).join(', ') || '—';
+
+    const items = [
+      { label: 'Name', value: val('firstName') || '—' },
+      { label: 'Email', value: val('email') || '—' },
+      { label: 'Cancer Type', value: val('cancerType') || '—' },
+      { label: 'Stage', value: val('stage') || '—' },
+      { label: 'Treatment Status', value: val('treatmentStatus') || '—' },
+      { label: 'Genomic Data', value: checked('genomics') },
+      { label: 'Imaging / Tissue', value: checked('imaging') },
+      { label: 'HLA Alleles', value: document.getElementById('hlaUnknown')?.checked ? 'To derive from WGS' : [val('hlaA1'), val('hlaA2'), val('hlaB1'), val('hlaB2')].filter(Boolean).join(', ') || '—' },
+      { label: 'Primary Goal', value: val('primaryGoal') || '—' },
+      { label: 'Risk Tolerance', value: riskLabels[val('riskTolerance')] || 'Moderate' },
+      { label: 'Geography', value: val('geography') || '—' },
+    ];
+
+    grid.innerHTML = items.map(i => `
+      <div class="review-item">
+        <div class="review-label">${i.label}</div>
+        <div class="review-value ${i.value === '—' ? 'missing' : ''}">${i.value}</div>
+      </div>
+    `).join('');
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+
+    const btn = document.querySelector('.btn-submit');
+    btn.textContent = 'Submitting…';
+    btn.disabled = true;
+
+    // Collect HLA alleles
+    const hlaAlleles = ['hlaA1','hlaA2','hlaB1','hlaB2','hlaC1','hlaC2']
+      .map(id => document.getElementById(id)?.value?.trim())
+      .filter(Boolean);
+
+    // Determine data mode
+    const vcfPath = document.getElementById('vcfPath')?.value?.trim();
+    const scrnaPath = document.getElementById('scrnaPath')?.value?.trim();
+    const dataMode = (vcfPath || scrnaPath) ? 'gcs' : 'upload';
+
+    // Check if scRNA was indicated
+    const hasScrna = document.querySelector('input[name="genomics"][value="scrna"]')?.checked ?? false;
+
+    const fd = new FormData();
+    fd.append('patient_name', document.getElementById('firstName')?.value?.trim() || '');
+    fd.append('cancer_type', document.getElementById('cancerType')?.value || '');
+    fd.append('hla_alleles', JSON.stringify(hlaAlleles));
+    fd.append('data_mode', dataMode);
+    fd.append('gcs_variants', vcfPath || '');
+    fd.append('gcs_scrna', scrnaPath || '');
+    fd.append('has_scrna', String(hasScrna));
+
+    // Attach first VCF file if user uploaded one
+    const vcfInput = document.getElementById('vcfFile');
+    if (vcfInput?.files?.[0]) fd.append('vcf_file', vcfInput.files[0]);
+
+    // Attach first scRNA file if user uploaded one
+    const scrnaInput = document.getElementById('scrnaFile');
+    if (scrnaInput?.files?.[0]) fd.append('scrna_file', scrnaInput.files[0]);
+
+    try {
+      const res = await fetch('http://localhost:8000/api/submit', { method: 'POST', body: fd });
+      if (!res.ok) throw new Error(`Server error ${res.status}`);
+      const { job_id } = await res.json();
+      window.location.href = `report.html?job=${job_id}`;
+    } catch (err) {
+      btn.textContent = 'Submit & Start Pipeline →';
+      btn.disabled = false;
+      alert('Failed to submit: ' + err.message + '\n\nMake sure the backend server is running (backend/start.bat).');
+    }
+  }
+
+  updateReadiness();
+</script>
+</main>
+</body>
+</html>

@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>F*CK CANCER — Personalized Oncology Pipeline</title>
+  <meta name="description" content="Landing page for an open-source personalized oncology pipeline based on the founder-mode approach to cancer care. Research and education only; not medical advice."/>
+  <meta property="og:title" content="Personalized Oncology Pipeline (founder mode on cancer)"/>
+  <meta property="og:description" content="Open-source personalized cancer treatment research and pipeline. Not medical advice."/>
+  <meta property="og:type" content="website"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #f8f9fa;
+      --surface-alt: #f1f3f4;
+      --border: #e8eaed;
+      --border-strong: #dadce0;
+      --text: #202124;
+      --muted: #5f6368;
+      --subtle: #9aa0a6;
+      --blue: #1a73e8;
+      --blue-light: rgba(26,115,232,0.08);
+      --blue-mid: rgba(26,115,232,0.18);
+      --blue-glow: rgba(26,115,232,0.35);
+      --green: #34a853;
+      --green-light: rgba(52,168,83,0.09);
+      --red: #ea4335;
+      --yellow: #fbbc05;
+      --yellow-light: rgba(251,188,5,0.12);
+      --display: 'Playfair Display', Georgia, serif;
+      --body: 'DM Sans', system-ui, sans-serif;
+      --mono: 'DM Mono', 'Courier New', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--body);
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 1.25rem 3rem;
+      display: flex; align-items: center; justify-content: space-between;
+      transition: background 0.3s, box-shadow 0.3s;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+    }
+    nav.scrolled {
+      box-shadow: 0 1px 0 var(--border), 0 4px 20px rgba(0,0,0,0.06);
+    }
+    .nav-mark {
+      display: flex; align-items: center; gap: 10px;
+      font-family: var(--mono); font-size: 0.8rem; font-weight: 500;
+      color: var(--blue); letter-spacing: 0.06em; text-decoration: none;
+    }
+    .nav-pulse {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--blue);
+      box-shadow: 0 0 0 0 var(--blue-glow);
+      animation: sonar 2s infinite;
+    }
+    @keyframes sonar {
+      0% { box-shadow: 0 0 0 0 var(--blue-glow); }
+      70% { box-shadow: 0 0 0 10px transparent; }
+      100% { box-shadow: 0 0 0 0 transparent; }
+    }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.85rem; font-weight: 500;
+      color: var(--muted); text-decoration: none;
+      position: relative; transition: color 0.2s;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -4px; left: 0; right: 0;
+      height: 2px; background: var(--blue); border-radius: 2px;
+      transform: scaleX(0); transform-origin: right; transition: transform 0.25s ease;
+    }
+    .nav-links a:hover { color: var(--blue); }
+    .nav-links a:hover::after { transform: scaleX(1); transform-origin: left; }
+    .nav-cta {
+      font-family: var(--body); font-size: 0.85rem; font-weight: 600;
+      color: #fff; background: var(--blue);
+      padding: 0.55rem 1.4rem; text-decoration: none;
+      border-radius: 24px;
+      transition: all 0.2s;
+      box-shadow: 0 1px 3px rgba(26,115,232,0.3);
+    }
+    .nav-cta:hover { background: #1558b0; box-shadow: 0 4px 12px rgba(26,115,232,0.35); transform: translateY(-1px); }
+    @media (max-width: 768px) { .nav-links { display: none; } nav { padding: 1rem 1.5rem; } }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: grid; place-items: center;
+      padding: 8rem 3rem 5rem;
+      position: relative; overflow: hidden;
+      background: linear-gradient(160deg, #fff 60%, #f0f4ff 100%);
+    }
+    .hero-bg { position: absolute; inset: 0; z-index: 0; }
+    .hero-orb {
+      position: absolute; border-radius: 50%;
+      filter: blur(100px); pointer-events: none;
+    }
+    .orb-1 {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(26,115,232,0.14) 0%, transparent 70%);
+      top: -180px; left: -120px;
+      animation: drift1 20s ease-in-out infinite;
+    }
+    .orb-2 {
+      width: 480px; height: 480px;
+      background: radial-gradient(circle, rgba(52,168,83,0.1) 0%, transparent 70%);
+      bottom: -100px; right: -80px;
+      animation: drift2 25s ease-in-out infinite;
+    }
+    .orb-3 {
+      width: 320px; height: 320px;
+      background: radial-gradient(circle, rgba(251,188,5,0.12) 0%, transparent 70%);
+      top: 40%; left: 60%;
+      animation: drift1 18s ease-in-out infinite reverse;
+    }
+    @keyframes drift1 { 0%,100%{transform:translate(0,0)} 33%{transform:translate(50px,-35px)} 66%{transform:translate(-25px,45px)} }
+    @keyframes drift2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-45px,-55px)} }
+
+    .hero-grid-lines {
+      position: absolute; inset: 0; z-index: 0;
+      background-image:
+        linear-gradient(rgba(26,115,232,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(26,115,232,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 100%);
+    }
+
+    .hero-content { position: relative; z-index: 1; max-width: 1000px; text-align: center; }
+
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 12px;
+      font-family: var(--mono); font-size: 0.72rem; font-weight: 500;
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--blue);
+      margin-bottom: 2rem;
+      animation: fadeUp 0.8s ease both;
+    }
+    .eyebrow-line { width: 36px; height: 1.5px; background: var(--blue); border-radius: 2px; }
+
+    .hero-headline {
+      font-family: var(--display);
+      font-size: clamp(3rem, 7vw, 6rem);
+      font-weight: 900; line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.8s 0.1s ease both;
+    }
+    .hero-headline em {
+      font-style: italic; color: var(--blue);
+      position: relative; display: inline-block;
+    }
+    .hero-headline em::after {
+      content: '';
+      position: absolute; bottom: 4px; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--blue), var(--green));
+      border-radius: 2px; transform: skewX(-4deg);
+    }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: var(--muted); font-weight: 400;
+      max-width: 640px; margin: 0 auto 3rem;
+      line-height: 1.8;
+      animation: fadeUp 0.8s 0.2s ease both;
+    }
+
+    .hero-actions {
+      display: flex; gap: 1.25rem; justify-content: center; flex-wrap: wrap;
+      animation: fadeUp 0.8s 0.3s ease both;
+    }
+    .btn-main {
+      font-family: var(--body); font-size: 0.95rem; font-weight: 600;
+      color: #fff; background: var(--blue);
+      padding: 0.9rem 2.25rem; text-decoration: none;
+      border-radius: 28px;
+      transition: all 0.25s;
+      box-shadow: 0 2px 8px rgba(26,115,232,0.35);
+    }
+    .btn-main:hover { background: #1558b0; box-shadow: 0 6px 20px rgba(26,115,232,0.4); transform: translateY(-2px); }
+    .btn-ghost {
+      font-family: var(--body); font-size: 0.95rem; font-weight: 600;
+      color: var(--blue); background: transparent;
+      padding: 0.9rem 2.25rem; text-decoration: none;
+      border: 1.5px solid var(--blue);
+      border-radius: 28px;
+      transition: all 0.25s;
+    }
+    .btn-ghost:hover { background: var(--blue-light); transform: translateY(-2px); }
+
+    .hero-scroll {
+      position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--subtle);
+      animation: fadeUp 1s 0.6s ease both;
+    }
+    .scroll-line {
+      width: 1.5px; height: 44px;
+      background: linear-gradient(var(--blue), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+    @keyframes scrollPulse { 0%,100%{opacity:0.4;transform:scaleY(1)} 50%{opacity:1;transform:scaleY(0.6)} }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+
+    /* MARQUEE */
+    .marquee-wrap {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+      background: var(--surface);
+      padding: 1rem 0;
+    }
+    .marquee-track {
+      display: flex; gap: 4rem;
+      animation: marquee 28s linear infinite;
+      white-space: nowrap;
+    }
+    .marquee-track:hover { animation-play-state: paused; }
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    .marquee-item {
+      font-family: var(--mono); font-size: 0.72rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--subtle); display: flex; align-items: center; gap: 1rem;
+      flex-shrink: 0;
+    }
+    .marquee-sep { color: var(--blue); font-size: 0.55rem; }
+    .marquee-val { color: var(--blue); font-weight: 500; }
+
+    /* STATS */
+    .stats-section { padding: 5rem 3rem; background: var(--bg); }
+    .stats {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      max-width: 1200px; margin: 0 auto;
+    }
+    .stat-cell {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem 1.75rem;
+      position: relative; overflow: hidden;
+      transition: box-shadow 0.3s, transform 0.3s;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .stat-cell:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.1); transform: translateY(-3px); }
+    .stat-cell::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      border-radius: 16px 16px 0 0;
+    }
+    .stat-cell.blue::before { background: var(--blue); }
+    .stat-cell.green::before { background: var(--green); }
+    .stat-cell.yellow::before { background: var(--yellow); }
+    .stat-num {
+      font-family: var(--display); font-size: 3rem; font-weight: 900;
+      line-height: 1; letter-spacing: -0.03em; margin-bottom: 0.25rem;
+    }
+    .stat-num.blue { color: var(--blue); }
+    .stat-num.green { color: var(--green); }
+    .stat-num.yellow { color: #e8a900; }
+    .stat-unit { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.1em; font-weight: 500; }
+    .stat-unit.blue { color: var(--blue); }
+    .stat-unit.green { color: var(--green); }
+    .stat-unit.yellow { color: #e8a900; }
+    .stat-label {
+      font-family: var(--body); font-size: 0.82rem; font-weight: 600;
+      color: var(--text); margin-top: 0.5rem;
+    }
+    .stat-note { font-size: 0.78rem; color: var(--muted); margin-top: 0.3rem; }
+
+    /* SECTION SCAFFOLD */
+    section { padding: 6rem 3rem; }
+    .inner { max-width: 1200px; margin: 0 auto; }
+    .section-kicker {
+      font-family: var(--mono); font-size: 0.7rem; font-weight: 500;
+      letter-spacing: 0.18em; text-transform: uppercase; color: var(--blue);
+      display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem;
+    }
+    .section-kicker::before { content: ''; width: 24px; height: 2px; background: var(--blue); border-radius: 2px; }
+    .section-title {
+      font-family: var(--display);
+      font-size: clamp(2rem, 4vw, 3.25rem);
+      font-weight: 900; line-height: 1.1;
+      letter-spacing: -0.02em; margin-bottom: 1rem; color: var(--text);
+    }
+    .section-body {
+      font-size: 1.05rem; color: var(--muted);
+      max-width: 560px; line-height: 1.8; margin-bottom: 3rem;
+    }
+
+    /* CASE STUDY */
+    .case-bg { background: var(--surface); }
+    .case-layout {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start;
+    }
+    @media(max-width:900px) { .case-layout { grid-template-columns: 1fr; gap: 3rem; } }
+
+    .case-profile {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 20px; padding: 2.25rem;
+      position: relative; overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+    .case-profile::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--blue), var(--green));
+      border-radius: 20px 20px 0 0;
+    }
+    .profile-top { display: flex; align-items: center; gap: 1.25rem; margin-bottom: 1.75rem; }
+    .profile-av {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue), var(--green));
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--display); font-size: 1.4rem; font-weight: 900;
+      color: #fff; flex-shrink: 0;
+    }
+    .profile-name { font-family: var(--display); font-size: 1.1rem; font-weight: 700; color: var(--text); }
+    .profile-role { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+    .profile-quote {
+      font-family: var(--display); font-style: italic;
+      font-size: 1rem; line-height: 1.75; color: var(--muted);
+      border-left: 3px solid var(--blue); padding-left: 1.25rem;
+      margin-bottom: 2rem;
+      background: var(--blue-light); border-radius: 0 8px 8px 0;
+      padding: 1rem 1rem 1rem 1.25rem;
+    }
+
+    .timeline { display: flex; flex-direction: column; gap: 1.25rem; }
+    .tl-item { display: grid; grid-template-columns: 72px auto; gap: 1rem; align-items: start; }
+    .tl-date {
+      font-family: var(--mono); font-size: 0.65rem;
+      letter-spacing: 0.06em; color: var(--subtle); padding-top: 3px; text-transform: uppercase;
+    }
+    .tl-body { display: block; }
+    .tl-title { font-weight: 600; font-size: 0.88rem; margin-bottom: 0.2rem; color: var(--text); }
+    .tl-text { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+    .tl-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+    .tl-dot.blue { background: var(--blue); }
+    .tl-dot.green { background: var(--green); }
+    .tl-dot.yellow { background: var(--yellow); }
+
+    /* IMMUNE SHIFT */
+    .immune-card {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 16px; padding: 2rem; margin-top: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .immune-title {
+      font-family: var(--mono); font-size: 0.68rem;
+      letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue);
+      margin-bottom: 1.5rem;
+    }
+    .immune-rows { display: flex; flex-direction: column; gap: 1.5rem; }
+    .immune-row { display: block; }
+    .immune-row-label {
+      display: flex; justify-content: space-between; align-items: baseline;
+      margin-bottom: 0.5rem;
+    }
+    .immune-row-name { font-size: 0.82rem; color: var(--muted); }
+    .immune-row-pct { font-family: var(--display); font-size: 1.4rem; font-weight: 900; }
+    .immune-row-pct.before { color: var(--subtle); }
+    .immune-row-pct.after { color: var(--green); }
+    .immune-track {
+      height: 8px; background: var(--surface-alt); border-radius: 4px; position: relative; overflow: visible;
+    }
+    .immune-fill {
+      height: 100%; position: absolute; left: 0; top: 0;
+      border-radius: 4px;
+      transition: width 2s cubic-bezier(0.23,1,0.32,1);
+    }
+    .immune-fill.before { background: var(--border-strong); width: 0; }
+    .immune-fill.after { background: linear-gradient(90deg, var(--blue), var(--green)); width: 0; box-shadow: 2px 0 10px rgba(52,168,83,0.3); }
+    .immune-fill.animated.before { width: 19%; }
+    .immune-fill.animated.after { width: 89%; }
+
+    /* BREAKTHROUGHS */
+    .break-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+    .break-card {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 16px; padding: 1.75rem;
+      transition: box-shadow 0.3s, transform 0.3s, border-color 0.3s;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .break-card:hover { box-shadow: 0 8px 24px rgba(26,115,232,0.1); border-color: var(--blue); transform: translateY(-3px); }
+    .break-num {
+      font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--blue); margin-bottom: 0.75rem;
+    }
+    .break-icon { font-size: 1.75rem; margin-bottom: 0.75rem; }
+    .break-title { font-family: var(--display); font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text); }
+    .break-body { font-size: 0.82rem; color: var(--muted); line-height: 1.7; }
+    .break-result {
+      margin-top: 0.875rem; padding: 0.55rem 0.875rem;
+      background: var(--green-light); border-left: 3px solid var(--green);
+      border-radius: 0 8px 8px 0;
+      font-family: var(--mono); font-size: 0.7rem; color: var(--green);
+      letter-spacing: 0.04em;
+    }
+
+    /* WHAT YOU NEED */
+    .need-bg { background: var(--bg); }
+    .need-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.25rem; }
+    .need-card {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 16px; padding: 2rem;
+      position: relative; overflow: hidden;
+      transition: box-shadow 0.3s, transform 0.3s;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .need-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.08); transform: translateY(-2px); }
+    .need-priority-bar {
+      position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 16px 16px 0 0;
+    }
+    .need-priority-bar.critical { background: var(--red); }
+    .need-priority-bar.important { background: var(--yellow); }
+    .need-priority-bar.supplementary { background: var(--blue); }
+    .need-icon-wrap {
+      width: 44px; height: 44px; margin-bottom: 1.25rem;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+      background: var(--surface); border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+    .need-title { font-family: var(--display); font-size: 1.05rem; font-weight: 700; margin-bottom: 0.25rem; color: var(--text); }
+    .need-badge {
+      display: inline-block; font-family: var(--mono); font-size: 0.62rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 0.18rem 0.6rem; margin-bottom: 1rem; border-radius: 20px;
+    }
+    .need-badge.critical { background: rgba(234,67,53,0.1); color: var(--red); }
+    .need-badge.important { background: var(--yellow-light); color: #b07000; }
+    .need-badge.supplementary { background: var(--blue-light); color: var(--blue); }
+    .need-list { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+    .need-list li {
+      font-size: 0.82rem; color: var(--muted); padding-left: 1.1rem; position: relative;
+    }
+    .need-list li::before { content: '›'; position: absolute; left: 0; color: var(--blue); font-weight: 700; }
+    .need-insight {
+      margin-top: 1.25rem; padding: 0.75rem 1rem;
+      background: var(--blue-light); border-left: 3px solid var(--blue);
+      border-radius: 0 8px 8px 0;
+      font-size: 0.78rem; color: var(--muted); line-height: 1.6;
+    }
+    .need-insight strong { color: var(--blue); }
+
+    /* STEPS */
+    .steps-bg { background: var(--surface); }
+    .steps-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
+    }
+    .step-card {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 16px; padding: 2rem;
+      position: relative;
+      transition: box-shadow 0.3s, transform 0.3s;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .step-card:hover { box-shadow: 0 8px 24px rgba(26,115,232,0.1); border-color: rgba(26,115,232,0.4); transform: translateY(-3px); }
+    .step-big-num {
+      font-family: var(--display); font-size: 4.5rem; font-weight: 900;
+      line-height: 1; color: rgba(26,115,232,0.07);
+      position: absolute; top: 1rem; right: 1.5rem;
+      letter-spacing: -0.05em; pointer-events: none;
+    }
+    .step-icon { font-size: 1.5rem; margin-bottom: 1rem; }
+    .step-title { font-family: var(--display); font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text); }
+    .step-body { font-size: 0.82rem; color: var(--muted); line-height: 1.7; }
+    .step-time {
+      display: inline-block; margin-top: 1rem;
+      font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--blue);
+      background: var(--blue-light); border-radius: 20px;
+      padding: 0.2rem 0.7rem;
+    }
+
+    /* COMPARISON TABLE */
+    .comp-wrap {
+      overflow-x: auto; border: 1px solid var(--border); border-radius: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .comp-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; min-width: 700px; }
+    .comp-table th {
+      padding: 1rem 1.5rem; text-align: left;
+      font-family: var(--mono); font-size: 0.68rem; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .comp-table th:nth-child(2) { color: var(--muted); }
+    .comp-table th:nth-child(3) { color: var(--blue); }
+    .comp-table td {
+      padding: 1rem 1.5rem; border-bottom: 1px solid var(--border);
+      color: var(--muted); vertical-align: top; line-height: 1.6;
+    }
+    .comp-table td:first-child { font-weight: 600; color: var(--text); font-size: 0.83rem; }
+    .comp-table td:nth-child(3) { color: var(--blue); }
+    .comp-table tr:last-child td { border-bottom: none; }
+    .comp-table tr:hover td { background: var(--surface); }
+    .badge-bad { background: rgba(234,67,53,0.08); color: var(--red); font-family: var(--mono); font-size: 0.65rem; padding: 0.2rem 0.55rem; border-radius: 20px; letter-spacing: 0.04em; }
+    .badge-good { background: var(--green-light); color: var(--green); font-family: var(--mono); font-size: 0.65rem; padding: 0.2rem 0.55rem; border-radius: 20px; letter-spacing: 0.04em; }
+
+    /* HOW WE HELP */
+    .help-bg { background: var(--bg); }
+    .help-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; }
+    .help-card {
+      padding: 2rem;
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 16px;
+      transition: box-shadow 0.3s, border-color 0.3s, transform 0.3s;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+      position: relative;
+    }
+    .help-card:hover { box-shadow: 0 8px 24px rgba(52,168,83,0.1); border-color: rgba(52,168,83,0.4); transform: translateY(-3px); }
+    .help-card::before {
+      content: attr(data-num);
+      position: absolute; top: 1.5rem; right: 1.5rem;
+      font-family: var(--mono); font-size: 0.62rem; color: var(--border-strong);
+    }
+    .help-icon {
+      width: 44px; height: 44px; font-size: 1.3rem;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--green-light); border-radius: 12px;
+      border: 1px solid rgba(52,168,83,0.2);
+      margin-bottom: 1.25rem;
+    }
+    .help-title { font-family: var(--display); font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text); }
+    .help-body { font-size: 0.82rem; color: var(--muted); line-height: 1.7; }
+    .help-tag {
+      margin-top: 0.875rem; font-family: var(--mono); font-size: 0.66rem;
+      color: var(--green); letter-spacing: 0.04em;
+    }
+
+    /* PIPELINE */
+    .pipeline-bg { background: var(--surface); }
+    .pipeline-list {
+      display: flex; flex-direction: column; gap: 0;
+      border: 1px solid var(--border); border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .pipeline-row {
+      display: grid; grid-template-columns: 56px 1fr auto;
+      gap: 1.5rem; align-items: center;
+      padding: 1.5rem 2rem; border-bottom: 1px solid var(--border);
+      background: var(--bg);
+      transition: background 0.2s;
+    }
+    .pipeline-row:last-child { border-bottom: none; }
+    .pipeline-row:hover { background: var(--surface); }
+    .p-num {
+      font-family: var(--display); font-size: 2rem; font-weight: 900;
+      color: rgba(26,115,232,0.15); letter-spacing: -0.04em; line-height: 1;
+    }
+    .p-title { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.2rem; color: var(--text); }
+    .p-desc { font-size: 0.8rem; color: var(--muted); }
+    .p-tools { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .tool-pill {
+      font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.04em;
+      padding: 0.2rem 0.65rem; background: var(--blue-light);
+      color: var(--blue); border: 1px solid var(--blue-mid);
+      border-radius: 20px;
+    }
+    @media(max-width:700px) { .pipeline-row { grid-template-columns: 40px 1fr; } .p-tools { display: none; } }
+
+    /* CTA */
+    .cta-sec {
+      text-align: center;
+      background: linear-gradient(160deg, #f0f4ff 0%, #fff 60%);
+    }
+    .cta-box {
+      border: 1px solid var(--border); border-radius: 24px; padding: 5rem 3rem;
+      max-width: 760px; margin: 0 auto;
+      background: var(--bg);
+      box-shadow: 0 4px 24px rgba(26,115,232,0.08);
+      position: relative; overflow: hidden;
+    }
+    .cta-box::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--blue), var(--green), var(--yellow));
+      border-radius: 24px 24px 0 0;
+    }
+    .cta-title {
+      font-family: var(--display);
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 900; line-height: 1.1; margin-bottom: 1.25rem; color: var(--text);
+    }
+    .cta-sub { font-size: 1.05rem; color: var(--muted); margin-bottom: 2.5rem; line-height: 1.8; }
+    .cta-note { margin-top: 1.5rem; font-size: 0.8rem; color: var(--subtle); }
+    .cta-note a { color: var(--blue); text-decoration: none; }
+    .cta-note a:hover { text-decoration: underline; }
+
+    /* FOOTER */
+    footer {
+      background: var(--surface); border-top: 1px solid var(--border);
+      padding: 3rem;
+    }
+    .footer-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; }
+    .footer-brand { font-family: var(--mono); font-size: 0.75rem; color: var(--subtle); letter-spacing: 0.08em; }
+    .footer-links { display: flex; gap: 2rem; flex-wrap: wrap; }
+    .footer-links a { font-size: 0.82rem; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--blue); }
+    .footer-disc { font-size: 0.78rem; color: var(--subtle); margin-top: 1.5rem; line-height: 1.6; max-width: 1200px; margin-left: auto; margin-right: auto; padding: 0 3rem 1.5rem; }
+
+    /* SCROLL REVEAL */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.65s ease, transform 0.65s ease; }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+
+    /* GOOGLE CHIP */
+    .g-chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 20px; padding: 0.35rem 0.875rem;
+      font-size: 0.78rem; color: var(--muted);
+      font-family: var(--body); font-weight: 500;
+    }
+    .g-chip-dot { width: 6px; height: 6px; border-radius: 50%; }
+
+    /* ACCESSIBILITY */
+    .skip-link {
+      position: absolute; top: -100%; left: 1rem;
+      background: var(--blue); color: #fff;
+      padding: 0.5rem 1rem; border-radius: 0 0 8px 8px;
+      font-size: 0.875rem; font-weight: 600; text-decoration: none;
+      z-index: 9999; transition: top 0.2s;
+    }
+    .skip-link:focus { top: 0; }
+    .visually-hidden {
+      position: absolute; width: 1px; height: 1px;
+      padding: 0; margin: -1px; overflow: hidden;
+      clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    }
+    :focus-visible {
+      outline: 3px solid var(--blue);
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<!-- NAV -->
+<nav id="nav" aria-label="Main navigation">
+  <a class="nav-mark" href="#" aria-label="F*CK CANCER — home">
+    <span class="nav-pulse" aria-hidden="true"></span>
+    F*CK CANCER
+  </a>
+  <ul class="nav-links" role="list">
+    <li><a href="#case">Case Study</a></li>
+    <li><a href="#need">What You Need</a></li>
+    <li><a href="#process">How It Works</a></li>
+    <li><a href="#pipeline">Pipeline</a></li>
+  </ul>
+  <div style="display:flex;gap:1rem;align-items:center;">
+    <a href="report.html" style="font-size:0.85rem;font-weight:500;color:var(--muted);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--blue)'" onmouseout="this.style.color='var(--muted)'">Sample Report</a>
+    <a href="intake.html" class="nav-cta">Get Started</a>
+  </div>
+</nav>
+
+<!-- HERO / MAIN -->
+<main id="main-content">
+<section class="hero" aria-labelledby="hero-heading">
+  <div class="hero-bg">
+    <div class="hero-orb orb-1"></div>
+    <div class="hero-orb orb-2"></div>
+    <div class="hero-orb orb-3"></div>
+    <div class="hero-grid-lines"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <span class="eyebrow-line"></span>
+      Open-Source Personalized Oncology
+      <span class="eyebrow-line"></span>
+    </div>
+    <h1 class="hero-headline" id="hero-heading">
+      The Tools to Fight Cancer<br/>
+      on <em>Your Terms</em>
+    </h1>
+    <p class="hero-sub">
+      Standard oncology moves sequentially. Cancer doesn't wait.
+      We bring research-grade genomics, AI-assisted neoantigen discovery,
+      and parallel treatment strategies to patients who refuse to accept "no more options."
+    </p>
+    <div class="hero-actions">
+      <a href="intake.html" class="btn-main">Start Your Analysis</a>
+      <a href="report.html" class="btn-ghost">View Sample Report</a>
+    </div>
+    <div style="margin-top:2.5rem;display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;">
+      <span class="g-chip"><span class="g-chip-dot" style="background:var(--green)"></span>T Cells 19% → 89%</span>
+      <span class="g-chip"><span class="g-chip-dot" style="background:var(--blue)"></span>FDA 48hr Approval</span>
+      <span class="g-chip"><span class="g-chip-dot" style="background:#e8a900"></span>25TB Open Data</span>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item">T Cell Infiltration <span class="marquee-sep">◆</span> <span class="marquee-val">19% → 89%</span></span>
+    <span class="marquee-item">Disease Status <span class="marquee-sep">◆</span> <span class="marquee-val">Undetectable 2026</span></span>
+    <span class="marquee-item">FDA Expanded Access <span class="marquee-sep">◆</span> <span class="marquee-val">48hr Approval</span></span>
+    <span class="marquee-item">Open Genomic Data <span class="marquee-sep">◆</span> <span class="marquee-val">25 Terabytes</span></span>
+    <span class="marquee-item">Parallel Treatments <span class="marquee-sep">◆</span> <span class="marquee-val">20+ Agents</span></span>
+    <span class="marquee-item">Neoantigen Vaccines <span class="marquee-sep">◆</span> <span class="marquee-val">5 Versions</span></span>
+    <span class="marquee-item">T Cell Infiltration <span class="marquee-sep">◆</span> <span class="marquee-val">19% → 89%</span></span>
+    <span class="marquee-item">Disease Status <span class="marquee-sep">◆</span> <span class="marquee-val">Undetectable 2026</span></span>
+    <span class="marquee-item">FDA Expanded Access <span class="marquee-sep">◆</span> <span class="marquee-val">48hr Approval</span></span>
+    <span class="marquee-item">Open Genomic Data <span class="marquee-sep">◆</span> <span class="marquee-val">25 Terabytes</span></span>
+    <span class="marquee-item">Parallel Treatments <span class="marquee-sep">◆</span> <span class="marquee-val">20+ Agents</span></span>
+    <span class="marquee-item">Neoantigen Vaccines <span class="marquee-sep">◆</span> <span class="marquee-val">5 Versions</span></span>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-section">
+  <div class="stats reveal">
+    <div class="stat-cell blue">
+      <div class="stat-num blue" data-target="89">0</div>
+      <div class="stat-unit blue">%</div>
+      <div class="stat-label">T Cell Infiltration</div>
+      <div class="stat-note">Up from 19% — confirmed at surgery</div>
+    </div>
+    <div class="stat-cell green">
+      <div class="stat-num green" style="font-size:2rem;line-height:1.3;">Undetectable</div>
+      <div class="stat-label" style="margin-top:0.25rem;">Disease Status</div>
+      <div class="stat-note">ctDNA negative as of early 2026</div>
+    </div>
+    <div class="stat-cell yellow">
+      <div class="stat-num yellow" data-target="25">0</div>
+      <div class="stat-unit yellow">TB</div>
+      <div class="stat-label">Open Genomic Data</div>
+      <div class="stat-note">Publicly available on Google Cloud</div>
+    </div>
+    <div class="stat-cell blue">
+      <div class="stat-num blue" data-target="48">0</div>
+      <div class="stat-unit blue">HRS</div>
+      <div class="stat-label">FDA Expanded Access</div>
+      <div class="stat-note">Every Form 3926 approved this fast</div>
+    </div>
+    <div class="stat-cell green">
+      <div class="stat-num green" data-target="20">0</div>
+      <div class="stat-unit green">+</div>
+      <div class="stat-label">Parallel Treatments</div>
+      <div class="stat-note">Distinct agents run simultaneously</div>
+    </div>
+  </div>
+</div>
+
+<!-- CASE STUDY -->
+<section class="case-bg" id="case">
+  <div class="inner">
+    <div class="section-kicker reveal">Proof of Concept</div>
+    <h2 class="section-title reveal">The Case That<br/><em style="font-style:italic;color:var(--blue);">Changed Everything</em></h2>
+    <p class="section-body reveal">Sid Sijbrandij, co-founder of GitLab, applied startup principles to his own osteosarcoma treatment — and achieved what standard medicine said was impossible after recurrence.</p>
+
+    <div class="case-layout">
+      <div>
+        <div class="case-profile reveal">
+          <div class="profile-top">
+            <div class="profile-av">S</div>
+            <div>
+              <div class="profile-name">Sid Sijbrandij</div>
+              <div class="profile-role">Co-founder & CEO, GitLab · Age 45 at diagnosis</div>
+            </div>
+          </div>
+          <div class="profile-quote">
+            "It costs $1B to get a drug approved. But it costs $1M to dose a single person with personalized therapy. The technologies exist today. The barriers are systemic."
+          </div>
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-date">NOV 2022</div>
+              <div class="tl-body">
+                <div class="tl-title"><span class="tl-dot yellow"></span>Diagnosis</div>
+                <div class="tl-text">Osteosarcoma, T5 vertebra. 6cm tumor. Surgery, radiation, and 4 cycles of cisplatin + doxorubicin follow.</div>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-date">2024</div>
+              <div class="tl-body">
+                <div class="tl-title"><span class="tl-dot yellow"></span>Recurrence</div>
+                <div class="tl-text">Cancer returned. Standard options exhausted. Jacob Stern appointed "care CEO." Founder Mode begins.</div>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-date">LATE 2024</div>
+              <div class="tl-body">
+                <div class="tl-title"><span class="tl-dot blue"></span>Parallel Strike</div>
+                <div class="tl-text">Simultaneous: checkpoint inhibitors + neoantigen vaccines + oncolytic virus + NK cells + FAP radioligand. ctDNA drops to undetectable in 2 months.</div>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-date">APR 2025</div>
+              <div class="tl-body">
+                <div class="tl-title"><span class="tl-dot green"></span>19% → 89%</div>
+                <div class="tl-text">Surgery at MSKCC confirms T cell infiltration shift. Tumor surgically resectable. The immune system has been retrained.</div>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-date">2026</div>
+              <div class="tl-body">
+                <div class="tl-title"><span class="tl-dot green"></span>Undetectable</div>
+                <div class="tl-text">Disease not detected. 25TB of genomic data open-sourced. mRNA neoantigen vaccine continues as maintenance.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="immune-card reveal">
+          <div class="immune-title">// Immune Microenvironment Shift</div>
+          <div class="immune-rows">
+            <div class="immune-row">
+              <div class="immune-row-label">
+                <span class="immune-row-name">Before combined treatment</span>
+                <span class="immune-row-pct before">19%</span>
+              </div>
+              <div class="immune-track"><div class="immune-fill before"></div></div>
+            </div>
+            <div class="immune-row">
+              <div class="immune-row-label">
+                <span class="immune-row-name">After combined treatment</span>
+                <span class="immune-row-pct after">89%</span>
+              </div>
+              <div class="immune-track"><div class="immune-fill after"></div></div>
+            </div>
+          </div>
+          <div style="margin-top:1.25rem;font-family:var(--mono);font-size:0.65rem;color:var(--subtle);letter-spacing:0.05em;">
+            T CELL % OF TUMOR-INFILTRATING IMMUNE CELLS — CONFIRMED AT SECOND SURGERY
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-kicker reveal" style="margin-bottom:1.5rem;">Key Breakthroughs</div>
+        <div class="break-grid" style="grid-template-columns:1fr;">
+          <div class="break-card reveal reveal-delay-1">
+            <div class="break-num">// 01</div>
+            <div class="break-icon">🔬</div>
+            <div class="break-title">scRNA-seq Revealed FAP Overexpression</div>
+            <div class="break-body">Standard gene panels showed nothing actionable. Single-cell RNA sequencing found cancer cells hijacking the wound-healing pathway via FAP. Without research-grade transcriptomics, this target would never have been found.</div>
+            <div class="break-result">→ Unlocked entire radioligand therapy arm</div>
+          </div>
+          <div class="break-card reveal reveal-delay-2">
+            <div class="break-num">// 02</div>
+            <div class="break-icon">⚛️</div>
+            <div class="break-title">Radioligand Therapy Shrank the Tumor</div>
+            <div class="break-body">Three doses of FAP-targeted radioligand (177Lu-FAPi then 225Ac-FAPi) in Germany made the tumor surgically resectable again. Accessed via theranostic principle: same molecule for imaging and therapy.</div>
+            <div class="break-result">→ Second surgery at MSKCC became possible</div>
+          </div>
+          <div class="break-card reveal reveal-delay-3">
+            <div class="break-num">// 03</div>
+            <div class="break-icon">⏱️</div>
+            <div class="break-title">FDA Form 3926: 48-Hour Approval</div>
+            <div class="break-body">Every Individual Patient Expanded Access IND was approved within 48 hours. The FDA was more accommodating than hospital IRBs. The bottleneck is institutional bureaucracy, not federal regulators.</div>
+            <div class="break-result">→ Parallel access to 5+ experimental agents</div>
+          </div>
+        </div>
+
+        <div style="margin-top:2rem;" class="reveal">
+          <div class="section-kicker" style="margin-bottom:1.5rem;">Standard vs. Founder Mode</div>
+          <div class="comp-wrap">
+            <table class="comp-table">
+              <thead>
+                <tr>
+                  <th>Factor</th>
+                  <th>Standard Care</th>
+                  <th>Founder Mode</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Treatment sequence</td><td><span class="badge-bad">Sequential</span></td><td><span class="badge-good">Parallel</span></td></tr>
+                <tr><td>Diagnostics</td><td>Gene panel + basic WES</td><td>WGS + WES + scRNA-seq + ctDNA + novel PET</td></tr>
+                <tr><td>Monitoring</td><td>Scans every 3 months</td><td>ctDNA every 2 weeks + serial scRNA-seq</td></tr>
+                <tr><td>Access</td><td>Trials or approved drugs</td><td>FDA Form 3926 (48hr approval)</td></tr>
+                <tr><td>Tissue handling</td><td>FFPE (destroys RNA)</td><td>Cryopreserved (all molecular info intact)</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT YOU NEED -->
+<section id="need" class="need-bg">
+  <div class="inner">
+    <div class="section-kicker reveal">Patient Checklist</div>
+    <h2 class="section-title reveal">What Information<br/>You Need</h2>
+    <p class="section-body reveal">The pipeline runs on your molecular data. Most patients never know they can request these files — they are legally yours.</p>
+
+    <div class="need-grid reveal">
+      <div class="need-card">
+        <div class="need-priority-bar critical"></div>
+        <div class="need-icon-wrap">🧬</div>
+        <div class="need-title">Whole Genome / Exome Sequencing</div>
+        <span class="need-badge critical">Critical</span>
+        <ul class="need-list">
+          <li>WGS of tumor tissue — the gold standard</li>
+          <li>WES as minimum, 5+ providers if possible</li>
+          <li>Tumor + matched normal (blood) paired</li>
+          <li>Raw FASTQ or VCF files — not just PDF reports</li>
+        </ul>
+        <div class="need-insight"><strong>How to get it:</strong> Request raw sequencing files from your hospital. HIPAA makes them legally yours. If they refuse, order directly from Personalis, Tempus, or CeGaT.</div>
+      </div>
+      <div class="need-card">
+        <div class="need-priority-bar critical"></div>
+        <div class="need-icon-wrap">🔭</div>
+        <div class="need-title">Single-Cell RNA Sequencing</div>
+        <span class="need-badge critical">Critical</span>
+        <ul class="need-list">
+          <li>scRNA-seq of fresh tumor biopsy — not FFPE</li>
+          <li>Demand cryopreservation before every biopsy</li>
+          <li>PBMC collections at multiple timepoints</li>
+          <li>H5AD or raw 10x Genomics format</li>
+        </ul>
+        <div class="need-insight"><strong>Why it matters:</strong> This is how FAP was found — invisible to every standard panel. Without it, the radioligand therapy arm doesn't exist.</div>
+      </div>
+      <div class="need-card">
+        <div class="need-priority-bar critical"></div>
+        <div class="need-icon-wrap">🩸</div>
+        <div class="need-title">Liquid Biopsy (ctDNA)</div>
+        <span class="need-badge critical">Critical</span>
+        <ul class="need-list">
+          <li>Signatera (Natera): personalized ctDNA tracking</li>
+          <li>Northstar: methylation-based signal</li>
+          <li>Every 2–4 weeks during treatment, not quarterly</li>
+          <li>Multiple platforms for cross-validation</li>
+        </ul>
+        <div class="need-insight"><strong>Real-time feedback:</strong> ctDNA confirmed treatment response weeks before imaging. Prevents wasted months on failing therapy.</div>
+      </div>
+      <div class="need-card">
+        <div class="need-priority-bar important"></div>
+        <div class="need-icon-wrap">🧪</div>
+        <div class="need-title">HLA Typing</div>
+        <span class="need-badge important">Important</span>
+        <ul class="need-list">
+          <li>High-resolution Class I (A, B, C alleles)</li>
+          <li>Class II (DR, DQ) for CD4+ T cell vaccines</li>
+          <li>Can be derived from WGS via OptiType</li>
+          <li>Every neoantigen prediction is HLA-specific</li>
+        </ul>
+        <div class="need-insight"><strong>Pipeline requirement:</strong> Without your HLA type, neoantigen binding predictions are impossible.</div>
+      </div>
+      <div class="need-card">
+        <div class="need-priority-bar important"></div>
+        <div class="need-icon-wrap">📊</div>
+        <div class="need-title">Bulk RNA-seq</div>
+        <span class="need-badge important">Important</span>
+        <ul class="need-list">
+          <li>Bulk RNA-seq of tumor tissue at minimum</li>
+          <li>Multiple providers across timepoints</li>
+          <li>TPM/FPKM counts matrix — not a report</li>
+          <li>Filters neoantigens to expressed genes only</li>
+        </ul>
+        <div class="need-insight"><strong>Reduces false positives:</strong> A mutation in an unexpressed gene can't form a neoantigen. Expression data cuts prediction noise.</div>
+      </div>
+      <div class="need-card">
+        <div class="need-priority-bar supplementary"></div>
+        <div class="need-icon-wrap">🖼️</div>
+        <div class="need-title">Imaging & Pathology</div>
+        <span class="need-badge supplementary">Supplementary</span>
+        <ul class="need-list">
+          <li>PET/CT in DICOM format, not just a radiology report</li>
+          <li>Novel tracers: 68Ga-FAP, 68Ga-B7H3, 68Ga-EphA2</li>
+          <li>H&E and IHC slides with immune staining</li>
+          <li>Flow cytometry: B/T cell subsets over time</li>
+        </ul>
+        <div class="need-insight"><strong>Theranostics:</strong> 68Ga-FAP PET positive = green light for radioligand therapy. Same molecule, different payload.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW TO PROCEED -->
+<section id="process" class="steps-bg">
+  <div class="inner">
+    <div class="section-kicker reveal">Your Roadmap</div>
+    <h2 class="section-title reveal">How to Proceed</h2>
+    <p class="section-body reveal">Six steps from diagnosis to personalized treatment recommendation. Each unlocks the next.</p>
+    <div class="steps-grid">
+      <div class="step-card reveal reveal-delay-1">
+        <div class="step-big-num">01</div>
+        <div class="step-icon">📋</div>
+        <div class="step-title">Request Your Data</div>
+        <div class="step-body">Contact your hospital's pathology lab and records department. Request all sequencing data in raw format (FASTQ, VCF). Under HIPAA, these files are yours.</div>
+        <span class="step-time">Days 1–7</span>
+      </div>
+      <div class="step-card reveal reveal-delay-2">
+        <div class="step-big-num">02</div>
+        <div class="step-icon">🧬</div>
+        <div class="step-title">Get Research-Grade Sequencing</div>
+        <div class="step-body">If your hospital only ran a gene panel, order full WGS and scRNA-seq independently. Critically: ensure future biopsy tissue is cryopreserved — formalin destroys the RNA you need.</div>
+        <span class="step-time">Weeks 2–4</span>
+      </div>
+      <div class="step-card reveal reveal-delay-3">
+        <div class="step-big-num">03</div>
+        <div class="step-icon">⬆️</div>
+        <div class="step-title">Submit to the Pipeline</div>
+        <div class="step-body">Upload your VCF, scRNA-seq data, HLA type, and RNA-seq matrix. The pipeline runs locally or in the cloud. Your data stays private unless you choose to open-source it.</div>
+        <span class="step-time">Day 1 of data receipt</span>
+      </div>
+      <div class="step-card reveal reveal-delay-1">
+        <div class="step-big-num">04</div>
+        <div class="step-icon">⚙️</div>
+        <div class="step-title">Pipeline Runs Automatically</div>
+        <div class="step-body">6 phases: annotation → scRNA-seq targets → neoantigen prediction → ESMFold validation → ranked treatment report. Takes 24–48 hours. Cloud GPU cost ~$5–15.</div>
+        <span class="step-time">24–48 hours</span>
+      </div>
+      <div class="step-card reveal reveal-delay-2">
+        <div class="step-big-num">05</div>
+        <div class="step-icon">📄</div>
+        <div class="step-title">Review Your Report</div>
+        <div class="step-body">You receive confirmed tumor targets, ranked neoantigen candidates with structural validation, and a 5-layer parallel treatment recommendation with regulatory access pathways for every drug.</div>
+        <span class="step-time">On completion</span>
+      </div>
+      <div class="step-card reveal reveal-delay-3">
+        <div class="step-big-num">06</div>
+        <div class="step-icon">🏥</div>
+        <div class="step-title">Work the Access Pathways</div>
+        <div class="step-body">Take the report to your oncologist. File FDA Form 3926 for experimental access (48-hour approval). For radioligand therapy: Heidelberg or LMU Munich. Start all layers simultaneously.</div>
+        <span class="step-time">Ongoing</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW WE HELP -->
+<section class="help-bg" id="help">
+  <div class="inner">
+    <div class="section-kicker reveal">Our Role</div>
+    <h2 class="section-title reveal">How We Help You</h2>
+    <p class="section-body reveal">We're not replacing your oncologist. We're giving you the molecular intelligence to have a fundamentally different conversation with them.</p>
+    <div class="help-grid">
+      <div class="help-card reveal" data-num="01">
+        <div class="help-icon">🧬</div>
+        <div class="help-title">Neoantigen Discovery</div>
+        <div class="help-body">We identify mutations in your tumor that can be presented to T cells via MHC. We predict binding affinity for your specific HLA alleles and validate structures via ESMFold — giving you a ranked vaccine target list.</div>
+        <div class="help-tag">// pVACseq · MHCflurry · ESMFold</div>
+      </div>
+      <div class="help-card reveal reveal-delay-1" data-num="02">
+        <div class="help-icon">🎯</div>
+        <div class="help-title">Surface Target Identification</div>
+        <div class="help-body">Single-cell RNA analysis finds proteins overexpressed on cancer cells but not normal tissue — targets for radioligand therapy, CAR-T, or ADCs. This is how FAP was found, unlocking an entire treatment arm.</div>
+        <div class="help-tag">// Scanpy · Leiden clustering · Wilcoxon DE</div>
+      </div>
+      <div class="help-card reveal reveal-delay-2" data-num="03">
+        <div class="help-icon">📊</div>
+        <div class="help-title">Real-Time Monitoring Setup</div>
+        <div class="help-body">We help you establish a ctDNA monitoring cadence (every 2 weeks) and interpret results across platforms. Liquid biopsy caught Sid's treatment response weeks before imaging — preventing wasted time.</div>
+        <div class="help-tag">// Signatera · Northstar · Personalis</div>
+      </div>
+      <div class="help-card reveal" data-num="04">
+        <div class="help-icon">🧭</div>
+        <div class="help-title">Treatment Access Navigation</div>
+        <div class="help-body">We map every confirmed target to available treatments and their access pathways: FDA Form 3926 for expanded access, German centers for radioligand, compassionate use programs globally.</div>
+        <div class="help-tag">// FDA · EMA · international pathways</div>
+      </div>
+      <div class="help-card reveal reveal-delay-1" data-num="05">
+        <div class="help-icon">🤖</div>
+        <div class="help-title">AI Decision Support</div>
+        <div class="help-body">The entire framework is packaged as an AI agent skill. Query it with your specific molecular profile and get evidence-based treatment compatibility checking and parallel strategy recommendations.</div>
+        <div class="help-tag">// founder-mode-oncology skill</div>
+      </div>
+      <div class="help-card reveal reveal-delay-2" data-num="06">
+        <div class="help-icon">📂</div>
+        <div class="help-title">Data Portability</div>
+        <div class="help-body">We help you assert your legal right to your genomic data, extract it from hospital systems, and optionally contribute to the research community — as Sid did with 25TB of open data on Google Cloud.</div>
+        <div class="help-tag">// HIPAA data rights · GCS hosting</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PIPELINE -->
+<section id="pipeline" class="pipeline-bg">
+  <div class="inner">
+    <div class="section-kicker reveal">Under the Hood</div>
+    <h2 class="section-title reveal">The 6-Phase Pipeline</h2>
+    <p class="section-body reveal">Open-source, auditable, runs on a consumer GPU. Every output is reviewable by you and your oncologist.</p>
+    <div class="pipeline-list reveal">
+      <div class="pipeline-row">
+        <div class="p-num">01</div>
+        <div>
+          <div class="p-title">Data Acquisition</div>
+          <div class="p-desc">Downloads pre-called variants, RNA-seq, and scRNA-seq from your data source or public repos (osteosarc.com, GEO, TCGA).</div>
+        </div>
+        <div class="p-tools"><span class="tool-pill">gsutil</span><span class="tool-pill">GEOparse</span></div>
+      </div>
+      <div class="pipeline-row">
+        <div class="p-num">02</div>
+        <div>
+          <div class="p-title">Variant Annotation</div>
+          <div class="p-desc">Annotates somatic variants with gene symbols and protein changes. Falls back to pyvcf if VEP unavailable.</div>
+        </div>
+        <div class="p-tools"><span class="tool-pill">VEP</span><span class="tool-pill">pyvcf3</span><span class="tool-pill">pysam</span></div>
+      </div>
+      <div class="pipeline-row">
+        <div class="p-num">03</div>
+        <div>
+          <div class="p-title">scRNA-seq Target Discovery</div>
+          <div class="p-desc">QC, normalization, UMAP clustering, differential expression. Checks for FAP, B7-H3, EphA2, and 8 other surface targets. Outputs cluster plots and ranked target list.</div>
+        </div>
+        <div class="p-tools"><span class="tool-pill">Scanpy</span><span class="tool-pill">Leiden</span><span class="tool-pill">Wilcoxon</span></div>
+      </div>
+      <div class="pipeline-row">
+        <div class="p-num">04</div>
+        <div>
+          <div class="p-title">Neoantigen Prediction</div>
+          <div class="p-desc">Predicts MHC Class I binding for all somatic peptides against your HLA alleles. Top 50 candidates selected by IC50 &lt;500nM threshold.</div>
+        </div>
+        <div class="p-tools"><span class="tool-pill">pVACseq</span><span class="tool-pill">MHCflurry</span><span class="tool-pill">Vaxrank</span></div>
+      </div>
+      <div class="pipeline-row">
+        <div class="p-num">05</div>
+        <div>
+          <div class="p-title">Structural Validation</div>
+          <div class="p-desc">Validates each candidate via ESMFold API. Computes mean pLDDT as a foldability proxy. Tiers candidates T1–T4. T1 (pLDDT &gt;85) = priority vaccine targets.</div>
+        </div>
+        <div class="p-tools"><span class="tool-pill">ESMFold</span><span class="tool-pill">ColabFold</span><span class="tool-pill">AlphaFold</span></div>
+      </div>
+      <div class="pipeline-row">
+        <div class="p-num">06</div>
+        <div>
+          <div class="p-title">Treatment Recommendation</div>
+          <div class="p-desc">Generates a structured report: 5-layer parallel treatment strategy, confirmed targets, ranked candidates, monitoring protocol, and regulatory access paths for every drug.</div>
+        </div>
+        <div class="p-tools"><span class="tool-pill">Python</span><span class="tool-pill">Pandas</span><span class="tool-pill">Markdown</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-sec">
+  <div class="inner">
+    <div class="cta-box reveal">
+      <h2 class="cta-title">Ready to Apply<br/><em style="font-style:italic;color:var(--blue);">Founder Mode</em><br/>to Your Diagnosis?</h2>
+      <p class="cta-sub">The technologies exist. The regulatory pathways exist. The data is public. What's been missing is someone to pull it all together. That's what we do.</p>
+      <div style="display:flex;gap:1.25rem;justify-content:center;flex-wrap:wrap;">
+        <a href="intake.html" class="btn-main">Start Your Analysis</a>
+        <a href="report.html" class="btn-ghost">View Sample Report</a>
+      </div>
+      <div class="cta-note">
+        Open source · Built on <a href="https://osteosarc.com">osteosarc.com</a> public data ·
+        <a href="https://github.com/broomva/founder-mode-cancer">GitHub</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer role="contentinfo">
+  <div class="footer-inner">
+    <div class="footer-brand">F*CK CANCER</div>
+    <div class="footer-links">
+      <a href="https://sytse.com/cancer/" target="_blank">sytse.com/cancer</a>
+      <a href="https://osteosarc.com" target="_blank">osteosarc.com</a>
+      <a href="https://github.com/broomva/founder-mode-cancer" target="_blank">GitHub</a>
+      <a href="https://evenone.ventures" target="_blank">Even One Ventures</a>
+      <a href="https://centuryofbio.com/p/sid" target="_blank">Century of Bio</a>
+    </div>
+  </div>
+  <div class="footer-disc">
+    This platform provides decision-support information only. Not medical advice. All treatment decisions must be made with a qualified oncologist. Neoantigen predictions are computational and require experimental validation.
+  </div>
+</footer>
+
+<script>
+  // Sticky nav
+  window.addEventListener('scroll', () => {
+    document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Counter animation
+  function animateCounter(el, target, duration = 1800) {
+    let start = null;
+    const step = ts => {
+      if (!start) start = ts;
+      const pct = Math.min((ts - start) / duration, 1);
+      const ease = 1 - Math.pow(1 - pct, 4);
+      el.textContent = Math.floor(ease * target);
+      if (pct < 1) requestAnimationFrame(step);
+      else el.textContent = target;
+    };
+    requestAnimationFrame(step);
+  }
+
+  // Scroll reveal + counter trigger
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        const num = e.target.querySelector('[data-target]');
+        if (num) animateCounter(num, parseInt(num.dataset.target));
+        e.target.querySelectorAll('.immune-fill').forEach(bar => {
+          setTimeout(() => bar.classList.add('animated'), 400);
+        });
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  const immuneCard = document.querySelector('.immune-card');
+  if (immuneCard) io.observe(immuneCard);
+
+  const statsGrid = document.querySelector('.stats');
+  if (statsGrid) {
+    const statsIO = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.querySelectorAll('[data-target]').forEach(el => {
+            animateCounter(el, parseInt(el.dataset.target));
+          });
+          statsIO.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    statsIO.observe(statsGrid);
+  }
+</script>
+</body>
+</html>

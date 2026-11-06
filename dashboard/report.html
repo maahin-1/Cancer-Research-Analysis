@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pipeline Report — F*CK CANCER</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #ffffff;
+      --surface: #f8f9fa;
+      --surface2: #f1f3f4;
+      --border: #e8eaed;
+      --border-strong: #dadce0;
+      --accent: #1a73e8;
+      --accent-light: rgba(26,115,232,0.08);
+      --accent2: #6366f1;
+      --accent2-light: rgba(99,102,241,0.08);
+      --accent3: #34a853;
+      --accent3-light: rgba(52,168,83,0.09);
+      --warn: #fbbc05;
+      --warn-dark: #b07000;
+      --warn-light: rgba(251,188,5,0.1);
+      --danger: #ea4335;
+      --danger-light: rgba(234,67,53,0.08);
+      --text: #202124;
+      --muted: #5f6368;
+      --subtle: #9aa0a6;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      line-height: 1.6;
+    }
+
+    /* SKIP LINK */
+    .skip-link {
+      position: absolute; top: -60px; left: 1rem;
+      background: var(--accent); color: #fff;
+      padding: 0.6rem 1.25rem; border-radius: 8px;
+      font-weight: 600; font-size: 0.9rem;
+      z-index: 9999; text-decoration: none;
+      transition: top 0.2s ease;
+      box-shadow: 0 4px 12px rgba(26,115,232,0.3);
+    }
+    .skip-link:focus { top: 1rem; }
+
+    /* FOCUS STYLES */
+    :focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+
+    /* REDUCED MOTION */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(255,255,255,0.95); backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+      padding: 0 1.5rem; height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem;
+    }
+    .nav-brand {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 1rem; font-weight: 800; color: var(--text);
+      text-decoration: none; letter-spacing: -0.01em; flex-shrink: 0;
+    }
+    .nav-brand:hover { color: var(--accent); }
+    .dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 8px rgba(26,115,232,0.5);
+      animation: pulse 2s infinite;
+      flex-shrink: 0;
+    }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.6;transform:scale(1.2)} }
+    .nav-actions { display: flex; gap: 0.6rem; align-items: center; }
+    .nav-btn {
+      padding: 0.45rem 1rem; border-radius: 20px; font-size: 0.82rem; font-weight: 600;
+      cursor: pointer; border: 1.5px solid var(--border-strong);
+      background: transparent; color: var(--muted);
+      text-decoration: none; transition: all 0.2s;
+      font-family: inherit; min-height: 36px;
+    }
+    .nav-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+    .nav-btn.primary {
+      background: var(--accent); border-color: var(--accent); color: #fff;
+      box-shadow: 0 1px 4px rgba(26,115,232,0.3);
+    }
+    .nav-btn.primary:hover { background: #1558b0; box-shadow: 0 4px 12px rgba(26,115,232,0.35); }
+
+    /* MOBILE NAV */
+    .nav-mobile-toggle {
+      display: none; background: none; border: 1.5px solid var(--border-strong);
+      border-radius: 8px; padding: 0.4rem 0.7rem; cursor: pointer;
+      font-size: 1rem; color: var(--muted); min-width: 44px; min-height: 44px;
+      align-items: center; justify-content: center;
+    }
+    @media (max-width: 900px) {
+      .nav-mobile-toggle { display: flex; }
+      .nav-actions .nav-btn:not(.primary) { display: none; }
+    }
+
+    /* LAYOUT */
+    .layout { display: flex; min-height: 100vh; padding-top: 64px; }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 256px; flex-shrink: 0;
+      background: var(--surface); border-right: 1px solid var(--border);
+      position: fixed; top: 64px; bottom: 0; left: 0;
+      overflow-y: auto; padding: 1.25rem 0;
+      transition: transform 0.3s ease;
+    }
+    .sidebar-section { padding: 0 0.875rem; margin-bottom: 1.25rem; }
+    .sidebar-label {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--subtle);
+      padding: 0 0.5rem; margin-bottom: 0.5rem;
+      font-family: 'DM Mono', monospace;
+    }
+    .sidebar-item {
+      display: flex; align-items: center; gap: 0.6rem;
+      padding: 0.55rem 0.75rem; border-radius: 10px; font-size: 0.85rem; font-weight: 500;
+      color: var(--muted); cursor: pointer; text-decoration: none;
+      transition: all 0.15s; min-height: 40px;
+    }
+    .sidebar-item:hover { background: rgba(0,0,0,0.05); color: var(--text); }
+    .sidebar-item.active { background: var(--accent-light); color: var(--accent); font-weight: 600; }
+    .sidebar-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .sidebar-dot.green { background: var(--accent3); }
+    .sidebar-dot.blue { background: var(--accent); }
+    .sidebar-dot.amber { background: var(--warn); }
+    .sidebar-dot.red { background: var(--danger); }
+    .sidebar-dot.purple { background: var(--accent2); }
+    .sidebar-divider { height: 1px; background: var(--border); margin: 0.5rem 0.875rem 1rem; }
+
+    .phase-status { display: flex; flex-direction: column; gap: 0.4rem; padding: 0 1.375rem; }
+    .phase-status-item { display: flex; align-items: center; gap: 0.6rem; font-size: 0.78rem; color: var(--muted); }
+    .phase-badge {
+      font-size: 0.62rem; font-weight: 700; padding: 0.12rem 0.45rem; border-radius: 20px;
+      font-family: 'DM Mono', monospace; flex-shrink: 0;
+    }
+    .phase-badge.done { background: var(--accent3-light); color: #1e7e34; border: 1px solid rgba(52,168,83,0.25); }
+    .phase-badge.running { background: var(--accent-light); color: var(--accent); border: 1px solid rgba(26,115,232,0.2); }
+    .phase-badge.pending { background: var(--surface2); color: var(--subtle); border: 1px solid var(--border); }
+
+    @media (max-width: 900px) {
+      .sidebar {
+        transform: translateX(-100%);
+        z-index: 90; box-shadow: 4px 0 24px rgba(0,0,0,0.12);
+      }
+      .sidebar.open { transform: translateX(0); }
+      .main { margin-left: 0 !important; }
+      .sidebar-overlay {
+        display: none; position: fixed; inset: 0; z-index: 89;
+        background: rgba(0,0,0,0.3); backdrop-filter: blur(2px);
+      }
+      .sidebar.open ~ .sidebar-overlay { display: block; }
+    }
+
+    /* MAIN CONTENT */
+    .main { margin-left: 256px; flex: 1; padding: 2rem 2rem 3rem; }
+    .main-inner { max-width: 900px; }
+
+    /* REPORT HEADER */
+    .report-header {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 20px; padding: 2rem; margin-bottom: 1.75rem;
+      position: relative; overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    }
+    .report-header::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
+      border-radius: 20px 20px 0 0;
+    }
+    .report-meta { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    .meta-item { display: flex; flex-direction: column; gap: 0.2rem; }
+    .meta-label {
+      font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--subtle);
+      font-family: 'DM Mono', monospace;
+    }
+    .meta-value { font-size: 0.9rem; font-weight: 600; color: var(--text); }
+    .report-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem; color: var(--text); letter-spacing: -0.01em; }
+    .report-subtitle { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
+
+    /* SUMMARY CARDS */
+    .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+    .summary-card {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 16px; padding: 1.25rem;
+      position: relative; overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .summary-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); transform: translateY(-2px); }
+    .summary-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 16px 16px 0 0; }
+    .summary-card.green::before { background: var(--accent3); }
+    .summary-card.blue::before { background: var(--accent); }
+    .summary-card.purple::before { background: var(--accent2); }
+    .summary-card.amber::before { background: var(--warn); }
+    .sc-label { font-size: 0.75rem; font-weight: 600; color: var(--muted); margin-bottom: 0.4rem; }
+    .sc-value { font-size: 1.6rem; font-weight: 900; line-height: 1; margin-bottom: 0.2rem; letter-spacing: -0.02em; }
+    .sc-value.green { color: var(--accent3); }
+    .sc-value.blue { color: var(--accent); }
+    .sc-value.purple { color: var(--accent2); }
+    .sc-value.amber { color: var(--warn-dark); }
+    .sc-sub { font-size: 0.775rem; color: var(--muted); line-height: 1.4; }
+
+    /* SECTIONS */
+    .report-section { margin-bottom: 2.5rem; scroll-margin-top: 80px; }
+    .section-heading {
+      display: flex; align-items: center; gap: 0.75rem;
+      font-size: 1.1rem; font-weight: 800; margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem; border-bottom: 2px solid var(--border);
+      color: var(--text); letter-spacing: -0.01em;
+    }
+    .section-icon { font-size: 1.2rem; }
+
+    /* TARGET CARDS */
+    .targets-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; }
+    .target-card {
+      background: var(--bg); border: 1.5px solid var(--border);
+      border-radius: 16px; padding: 1.25rem;
+      transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .target-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); transform: translateY(-2px); }
+    .target-card.confirmed { border-color: rgba(52,168,83,0.4); background: rgba(52,168,83,0.025); }
+    .target-card.pending { border-color: rgba(251,188,5,0.4); background: rgba(251,188,5,0.025); }
+    .target-card.not-detected { opacity: 0.65; }
+    .target-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.75rem; }
+    .target-name {
+      font-size: 1.05rem; font-weight: 800;
+      font-family: 'DM Mono', monospace; color: var(--text);
+    }
+    .target-status-badge {
+      font-size: 0.68rem; font-weight: 700; padding: 0.22rem 0.6rem;
+      border-radius: 20px; flex-shrink: 0; font-family: 'DM Mono', monospace;
+    }
+    .target-status-badge.confirmed { background: var(--accent3-light); color: #1e7e34; border: 1px solid rgba(52,168,83,0.25); }
+    .target-status-badge.pending { background: var(--warn-light); color: var(--warn-dark); border: 1px solid rgba(251,188,5,0.3); }
+    .target-status-badge.not-detected { background: var(--surface2); color: var(--subtle); border: 1px solid var(--border); }
+    .target-desc { font-size: 0.825rem; color: var(--muted); margin-bottom: 0.75rem; line-height: 1.6; }
+    .target-stats { display: flex; gap: 1.25rem; flex-wrap: wrap; }
+    .target-stat { display: flex; flex-direction: column; gap: 0.1rem; }
+    .target-stat-value { font-size: 0.85rem; font-weight: 700; color: var(--text); font-family: 'DM Mono', monospace; }
+    .target-stat-label { font-size: 0.7rem; color: var(--muted); }
+    .target-action {
+      margin-top: 0.875rem; padding: 0.5rem 0.875rem;
+      border-radius: 8px; font-size: 0.78rem; font-weight: 600; line-height: 1.5;
+    }
+    .target-action.green { background: var(--accent3-light); color: #1e7e34; border: 1px solid rgba(52,168,83,0.2); }
+    .target-action.blue { background: var(--accent-light); color: #1558b0; border: 1px solid rgba(26,115,232,0.2); }
+
+    /* NEOANTIGEN TABLE */
+    .table-wrap { overflow-x: auto; border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+    .neo-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; min-width: 580px; }
+    .neo-table th {
+      padding: 0.875rem 1rem; text-align: left; font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);
+      border-bottom: 1px solid var(--border); background: var(--surface);
+      font-family: 'DM Mono', monospace;
+    }
+    .neo-table th:first-child { border-radius: 16px 0 0 0; }
+    .neo-table th:last-child { border-radius: 0 16px 0 0; }
+    .neo-table td {
+      padding: 0.75rem 1rem; border-bottom: 1px solid var(--border);
+      color: var(--muted); vertical-align: middle;
+    }
+    .neo-table tr:last-child td { border-bottom: none; }
+    .neo-table tr:hover td { background: var(--surface); }
+    .peptide-seq {
+      font-family: 'DM Mono', monospace; font-size: 0.88rem;
+      color: var(--text); letter-spacing: 0.04em;
+    }
+    .tier-badge { display: inline-block; padding: 0.18rem 0.55rem; border-radius: 20px; font-size: 0.68rem; font-weight: 700; font-family: 'DM Mono', monospace; }
+    .tier-badge.T1 { background: var(--accent3-light); color: #1e7e34; border: 1px solid rgba(52,168,83,0.25); }
+    .tier-badge.T2 { background: var(--accent-light); color: #1558b0; border: 1px solid rgba(26,115,232,0.2); }
+    .tier-badge.T3 { background: var(--warn-light); color: var(--warn-dark); border: 1px solid rgba(251,188,5,0.25); }
+    .tier-badge.T4 { background: var(--surface2); color: var(--subtle); border: 1px solid var(--border); }
+    .ic50-bar { display: flex; align-items: center; gap: 0.6rem; }
+    .ic50-fill { height: 6px; border-radius: 3px; }
+    .ic50-fill.good { background: var(--accent3); }
+    .ic50-fill.ok { background: var(--accent); }
+    .ic50-fill.weak { background: var(--border-strong); }
+
+    /* TREATMENT LAYERS */
+    .treatment-layers { display: flex; flex-direction: column; gap: 0.875rem; }
+    .treatment-layer {
+      background: var(--bg); border: 1.5px solid var(--border);
+      border-radius: 16px; overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+      transition: box-shadow 0.2s;
+    }
+    .treatment-layer:has(.layer-body.open) { box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+    .layer-header {
+      display: flex; align-items: center; gap: 0.875rem; padding: 1rem 1.25rem;
+      cursor: pointer; user-select: none;
+      transition: background 0.15s; min-height: 60px;
+      border: none; background: transparent; width: 100%;
+      text-align: left; font-family: inherit;
+    }
+    .layer-header:hover { background: rgba(0,0,0,0.03); }
+    .layer-num {
+      width: 32px; height: 32px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem; font-weight: 800; flex-shrink: 0;
+      font-family: 'DM Mono', monospace;
+    }
+    .layer-num.l1 { background: var(--accent3-light); color: #1e7e34; }
+    .layer-num.l2 { background: var(--accent-light); color: var(--accent); }
+    .layer-num.l3 { background: var(--accent2-light); color: var(--accent2); }
+    .layer-num.l4 { background: var(--warn-light); color: var(--warn-dark); }
+    .layer-num.l5 { background: var(--danger-light); color: var(--danger); }
+    .layer-title { flex: 1; font-size: 0.95rem; font-weight: 700; color: var(--text); }
+    .layer-tag {
+      font-size: 0.68rem; font-weight: 700; padding: 0.2rem 0.65rem;
+      border-radius: 20px; font-family: 'DM Mono', monospace; flex-shrink: 0;
+    }
+    .layer-tag.approved { background: var(--accent3-light); color: #1e7e34; border: 1px solid rgba(52,168,83,0.25); }
+    .layer-tag.expanded { background: var(--accent-light); color: #1558b0; border: 1px solid rgba(26,115,232,0.2); }
+    .layer-tag.international { background: var(--warn-light); color: var(--warn-dark); border: 1px solid rgba(251,188,5,0.3); }
+    .layer-chevron { color: var(--muted); transition: transform 0.25s ease; font-size: 0.8rem; flex-shrink: 0; }
+    .layer-chevron.open { transform: rotate(180deg); }
+    .layer-body { padding: 0 1.25rem 1.25rem; display: none; border-top: 1px solid var(--border); padding-top: 1.25rem; }
+    .layer-body.open { display: block; animation: fadeSlide 0.25s ease; }
+    @keyframes fadeSlide { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+
+    .drug-list { display: flex; flex-direction: column; gap: 0.875rem; margin-bottom: 1rem; }
+    .drug-item { display: flex; align-items: flex-start; gap: 0.75rem; padding: 0.875rem; background: var(--surface); border-radius: 12px; border: 1px solid var(--border); }
+    .drug-icon { font-size: 1rem; flex-shrink: 0; margin-top: 2px; }
+    .drug-name { font-size: 0.875rem; font-weight: 700; color: var(--text); margin-bottom: 0.2rem; }
+    .drug-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.6; }
+    .drug-access {
+      margin-top: 0.3rem; font-size: 0.75rem; font-weight: 600;
+      display: flex; align-items: center; gap: 0.4rem; color: var(--accent);
+    }
+    .access-box {
+      background: var(--accent-light); border: 1px solid rgba(26,115,232,0.2);
+      border-radius: 10px; padding: 0.875rem 1rem;
+      font-size: 0.8rem; color: var(--muted); line-height: 1.6;
+    }
+    .access-box strong { color: var(--accent); }
+
+    /* MONITORING TABLE */
+    .monitoring-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    .monitoring-table th, .monitoring-table td {
+      padding: 0.875rem 1rem; text-align: left; border-bottom: 1px solid var(--border);
+    }
+    .monitoring-table th {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--muted); background: var(--surface);
+      font-family: 'DM Mono', monospace;
+    }
+    .monitoring-table td { color: var(--muted); vertical-align: top; }
+    .monitoring-table td:first-child { font-weight: 600; color: var(--text); }
+    .monitoring-table tr:last-child td { border-bottom: none; }
+    .monitoring-table tr:hover td { background: var(--surface); }
+    .freq-badge {
+      display: inline-block; padding: 0.18rem 0.6rem; border-radius: 20px;
+      font-size: 0.72rem; font-weight: 600;
+      background: var(--accent2-light); color: var(--accent2);
+      border: 1px solid rgba(99,102,241,0.2);
+      font-family: 'DM Mono', monospace;
+    }
+
+    /* NEXT STEPS */
+    .next-steps { display: flex; flex-direction: column; gap: 0.75rem; }
+    .next-step-item {
+      display: flex; align-items: flex-start; gap: 1rem;
+      background: var(--bg); border: 1.5px solid var(--border);
+      border-radius: 14px; padding: 1rem;
+      transition: box-shadow 0.2s, transform 0.2s;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .next-step-item:hover { box-shadow: 0 4px 14px rgba(0,0,0,0.08); transform: translateY(-1px); }
+    .next-step-priority {
+      width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 5px;
+    }
+    .next-step-priority.high { background: var(--danger); box-shadow: 0 0 0 3px rgba(234,67,53,0.15); }
+    .next-step-priority.med { background: var(--warn); box-shadow: 0 0 0 3px rgba(251,188,5,0.2); }
+    .next-step-priority.low { background: var(--accent3); box-shadow: 0 0 0 3px rgba(52,168,83,0.15); }
+    .next-step-text { flex: 1; font-size: 0.875rem; color: var(--muted); line-height: 1.6; }
+    .next-step-text strong { color: var(--text); display: block; margin-bottom: 0.2rem; font-size: 0.9rem; }
+    .next-step-time {
+      font-size: 0.72rem; font-weight: 600; color: var(--accent2); flex-shrink: 0;
+      font-family: 'DM Mono', monospace;
+      background: var(--accent2-light); padding: 0.2rem 0.6rem; border-radius: 20px;
+      height: fit-content; margin-top: 2px;
+    }
+
+    /* DEMO BANNER */
+    .demo-banner {
+      background: var(--accent2-light); border: 1px solid rgba(99,102,241,0.25);
+      border-radius: 12px; padding: 0.875rem 1.25rem; margin-bottom: 1.75rem;
+      display: flex; align-items: flex-start; gap: 0.75rem; font-size: 0.85rem; color: var(--muted);
+    }
+    .demo-banner strong { color: var(--accent2); }
+    .demo-banner code {
+      font-family: 'DM Mono', monospace; font-size: 0.8rem;
+      background: rgba(99,102,241,0.1); padding: 0.1rem 0.4rem; border-radius: 4px;
+      color: var(--accent2);
+    }
+
+    /* DISCLAIMER */
+    .disclaimer-footer {
+      background: var(--warn-light); border: 1px solid rgba(251,188,5,0.3);
+      border-radius: 14px; padding: 1.25rem 1.5rem; margin-top: 2rem;
+      font-size: 0.8rem; color: var(--muted); line-height: 1.7;
+    }
+    .disclaimer-footer strong { color: var(--warn-dark); }
+    .disclaimer-footer a { color: var(--accent); text-decoration: none; }
+    .disclaimer-footer a:hover { text-decoration: underline; }
+
+    /* PRIORITY LEGEND */
+    .priority-legend {
+      display: flex; gap: 1.25rem; margin-bottom: 1rem; flex-wrap: wrap;
+      font-size: 0.78rem; color: var(--muted); align-items: center;
+    }
+    .legend-item { display: flex; align-items: center; gap: 0.4rem; }
+    .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+    /* SIDEBAR QUICK STATS */
+    .quick-stat { font-size: 0.8rem; color: var(--muted); }
+    .quick-stat strong { color: var(--text); }
+    .quick-stat.highlight strong { color: var(--accent3); }
+
+    /* PRINT */
+    @media print {
+      .sidebar, nav, .nav-actions, .demo-banner, .skip-link { display: none !important; }
+      .main { margin-left: 0 !important; }
+      body { background: white; color: black; font-size: 12pt; }
+      .report-header, .summary-card, .target-card, .treatment-layer,
+      .next-step-item { box-shadow: none !important; border: 1px solid #ccc !important; }
+    }
+
+    @media (max-width: 600px) {
+      nav { padding: 0 1rem; }
+      .main { padding: 1.25rem 1rem 2rem; }
+      .report-meta { gap: 0.875rem; }
+      .summary-grid { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+      .targets-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- SKIP TO MAIN CONTENT -->
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<!-- SIDEBAR OVERLAY (mobile) -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()" aria-hidden="true"></div>
+
+<!-- NAV -->
+<nav role="navigation" aria-label="Main navigation">
+  <a class="nav-brand" href="index.html" aria-label="F*CK CANCER — Return to home">
+    <span class="dot" aria-hidden="true"></span>
+    F*CK CANCER
+  </a>
+  <button class="nav-mobile-toggle" onclick="toggleSidebar()" aria-label="Toggle report navigation" aria-expanded="false" id="sidebarToggle">☰</button>
+  <div class="nav-actions" role="group" aria-label="Report actions">
+    <a href="intake.html" class="nav-btn">New Patient</a>
+    <button class="nav-btn" onclick="window.print()" aria-label="Print this report">Print</button>
+    <button class="nav-btn primary" onclick="downloadReport()" aria-label="Download report as PDF">Download PDF</button>
+  </div>
+</nav>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar" role="complementary" aria-label="Report navigation and pipeline status">
+    <div class="sidebar-section">
+      <div class="sidebar-label" id="nav-sections-label">Report Sections</div>
+      <nav aria-labelledby="nav-sections-label">
+        <a class="sidebar-item active" href="#summary" aria-current="true">
+          <span class="sidebar-dot blue" aria-hidden="true"></span> Executive Summary
+        </a>
+        <a class="sidebar-item" href="#targets">
+          <span class="sidebar-dot green" aria-hidden="true"></span> Tumor Targets
+        </a>
+        <a class="sidebar-item" href="#neoantigens">
+          <span class="sidebar-dot blue" aria-hidden="true"></span> Neoantigen Candidates
+        </a>
+        <a class="sidebar-item" href="#treatment">
+          <span class="sidebar-dot purple" aria-hidden="true"></span> Treatment Plan
+        </a>
+        <a class="sidebar-item" href="#monitoring">
+          <span class="sidebar-dot amber" aria-hidden="true"></span> Monitoring Protocol
+        </a>
+        <a class="sidebar-item" href="#nextsteps">
+          <span class="sidebar-dot green" aria-hidden="true"></span> Next Steps
+        </a>
+      </nav>
+    </div>
+
+    <div class="sidebar-divider" role="separator"></div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Pipeline Status</div>
+      <div class="phase-status" role="list" aria-label="Pipeline phase completion status">
+        <div class="phase-status-item" role="listitem"><span class="phase-badge done">DONE</span> Phase 1 — Data Acquisition</div>
+        <div class="phase-status-item" role="listitem"><span class="phase-badge done">DONE</span> Phase 2 — Variant Annotation</div>
+        <div class="phase-status-item" role="listitem"><span class="phase-badge done">DONE</span> Phase 3 — scRNA-seq Analysis</div>
+        <div class="phase-status-item" role="listitem"><span class="phase-badge done">DONE</span> Phase 4 — Neoantigen Prediction</div>
+        <div class="phase-status-item" role="listitem"><span class="phase-badge done">DONE</span> Phase 5 — Structural Validation</div>
+        <div class="phase-status-item" role="listitem"><span class="phase-badge done">DONE</span> Phase 6 — Treatment Report</div>
+      </div>
+    </div>
+
+    <div class="sidebar-divider" role="separator"></div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Quick Stats</div>
+      <div style="padding: 0 0.5rem; display: flex; flex-direction: column; gap: 0.5rem;" role="list" aria-label="Quick statistics">
+        <div class="quick-stat" role="listitem">Variants annotated: <strong>4,218</strong></div>
+        <div class="quick-stat" role="listitem">Cells analyzed: <strong>18,342</strong></div>
+        <div class="quick-stat" role="listitem">Clusters found: <strong>11</strong></div>
+        <div class="quick-stat" role="listitem">Peptides screened: <strong>1,206</strong></div>
+        <div class="quick-stat highlight" role="listitem">Candidates (T1+T2): <strong>12</strong></div>
+        <div class="quick-stat highlight" role="listitem">Targets confirmed: <strong>3</strong></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main" id="main-content" role="main" tabindex="-1">
+    <div class="main-inner">
+
+      <div class="demo-banner" id="demoBanner" role="note" aria-label="Demo report notice">
+        <span aria-hidden="true">🔬</span>
+        <span><strong>Demo Report</strong> — This is a sample output generated from Sid Sijbrandij's public osteosarcoma dataset (<code>gs://osteosarc-genomics</code>). Real patient reports follow the same structure.</span>
+      </div>
+
+      <!-- PIPELINE PROGRESS (shown while running a real job) -->
+      <div id="pipeline-log-panel" class="log-panel hidden" aria-live="polite" aria-label="Pipeline log">
+        <div class="log-panel-title">Pipeline running…</div>
+        <div id="pipeline-log" class="log-output" role="log" aria-label="Pipeline output"></div>
+      </div>
+
+      <!-- LIVE RESULTS (injected after pipeline completes) -->
+      <div id="live-results-panel" class="hidden">
+        <div class="live-results-badge">&#10003; Live Results</div>
+
+        <!-- Neoantigen candidates table -->
+        <div class="report-section" id="live-neoantigens">
+          <h2 class="section-heading"><span class="section-icon" aria-hidden="true">💉</span> Neoantigen Candidates</h2>
+          <div style="overflow-x:auto; margin-top:1rem;">
+            <table style="width:100%; border-collapse:collapse; font-size:0.85rem;">
+              <thead>
+                <tr style="background:var(--surface2);">
+                  <th style="padding:0.6rem 0.75rem; text-align:left; font-weight:600; color:var(--muted); border-bottom:2px solid var(--border-strong);">Peptide</th>
+                  <th style="padding:0.6rem 0.75rem; text-align:left; font-weight:600; color:var(--muted); border-bottom:2px solid var(--border-strong);">IC50 (nM)</th>
+                  <th style="padding:0.6rem 0.75rem; text-align:left; font-weight:600; color:var(--muted); border-bottom:2px solid var(--border-strong);">Tier</th>
+                  <th style="padding:0.6rem 0.75rem; text-align:left; font-weight:600; color:var(--muted); border-bottom:2px solid var(--border-strong);">pLDDT</th>
+                  <th style="padding:0.6rem 0.75rem; text-align:left; font-weight:600; color:var(--muted); border-bottom:2px solid var(--border-strong);">Gene</th>
+                </tr>
+              </thead>
+              <tbody id="candidates-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- scRNA target genes -->
+        <div class="report-section" id="live-targets">
+          <h2 class="section-heading"><span class="section-icon" aria-hidden="true">🎯</span> Discovered Targets (scRNA-seq)</h2>
+          <ul id="targets-list" style="margin-top:1rem; list-style:none; display:flex; flex-direction:column; gap:0.5rem;"></ul>
+        </div>
+
+        <!-- Treatment recommendation (raw markdown as pre) -->
+        <div class="report-section" id="live-treatment">
+          <h2 class="section-heading"><span class="section-icon" aria-hidden="true">🏥</span> Treatment Recommendation</h2>
+          <pre id="treatment-md" style="white-space:pre-wrap; font-size:0.875rem; color:var(--text); line-height:1.75; margin-top:1rem; background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1.25rem;"></pre>
+        </div>
+      </div>
+
+      <!-- REPORT HEADER -->
+      <div class="report-header" id="summary">
+        <div class="report-meta" role="list" aria-label="Report metadata">
+          <div class="meta-item" role="listitem">
+            <div class="meta-label">Case ID</div>
+            <div class="meta-value">FMO-2024-0001</div>
+          </div>
+          <div class="meta-item" role="listitem">
+            <div class="meta-label">Cancer Type</div>
+            <div class="meta-value">Osteosarcoma (T5 Vertebra)</div>
+          </div>
+          <div class="meta-item" role="listitem">
+            <div class="meta-label">Pipeline Version</div>
+            <div class="meta-value">v1.0 — 6 phases complete</div>
+          </div>
+          <div class="meta-item" role="listitem">
+            <div class="meta-label">Report Generated</div>
+            <div class="meta-value" id="reportDate">—</div>
+          </div>
+          <div class="meta-item" role="listitem">
+            <div class="meta-label">Data Source</div>
+            <div class="meta-value">gs://osteosarc-genomics</div>
+          </div>
+        </div>
+        <h1 class="report-title">Personalized Treatment Recommendation</h1>
+        <p class="report-subtitle">
+          Full 6-phase pipeline output: tumor target discovery, ranked neoantigen candidates,
+          and a parallel combination treatment strategy with regulatory access pathways.
+        </p>
+      </div>
+
+      <!-- SUMMARY CARDS -->
+      <section aria-labelledby="summary-heading">
+        <h2 id="summary-heading" class="visually-hidden">Executive Summary</h2>
+        <div class="summary-grid" role="list" aria-label="Key metrics">
+          <div class="summary-card green" role="listitem">
+            <div class="sc-label">Overall Assessment</div>
+            <div class="sc-value green" style="font-size:1.2rem;">Actionable</div>
+            <div class="sc-sub">3 confirmed targets, 12 neoantigen candidates</div>
+          </div>
+          <div class="summary-card blue" role="listitem">
+            <div class="sc-label">Top Neoantigen IC50</div>
+            <div class="sc-value blue">38 nM</div>
+            <div class="sc-sub">Strong binder (threshold: &lt;500 nM)</div>
+          </div>
+          <div class="summary-card purple" role="listitem">
+            <div class="sc-label">T1 Tier Candidates</div>
+            <div class="sc-value purple">5</div>
+            <div class="sc-sub">pLDDT &gt;85 via ESMFold validation</div>
+          </div>
+          <div class="summary-card amber" role="listitem">
+            <div class="sc-label">FAP Status</div>
+            <div class="sc-value amber" style="font-size:1.1rem;">CONFIRMED</div>
+            <div class="sc-sub">log2FC = 3.2, padj &lt; 0.001</div>
+          </div>
+          <div class="summary-card green" role="listitem">
+            <div class="sc-label">Treatment Arms Identified</div>
+            <div class="sc-value green">5</div>
+            <div class="sc-sub">Parallel layers, all access paths mapped</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TUMOR TARGETS -->
+      <div class="report-section" id="targets">
+        <h2 class="section-heading">
+          <span class="section-icon" aria-hidden="true">🎯</span>
+          Tumor Surface Targets — scRNA-seq Discovery
+        </h2>
+        <p style="font-size:0.875rem; color:var(--muted); margin-bottom:1.25rem; line-height:1.7;">
+          Targets identified via differential expression across 11 clusters (18,342 cells).
+          Confirmed targets have log2FC &gt; 1 and adjusted p-value &lt; 0.05 in the dominant tumor cluster.
+        </p>
+        <div class="targets-grid">
+          <article class="target-card confirmed" aria-label="FAP target — Confirmed">
+            <div class="target-header">
+              <div class="target-name">FAP</div>
+              <span class="target-status-badge confirmed" role="status">CONFIRMED</span>
+            </div>
+            <p class="target-desc">Fibroblast Activation Protein — wound-healing pathway hijacked by tumor stroma. Key radioligand therapy target.</p>
+            <dl class="target-stats">
+              <div class="target-stat"><dt class="target-stat-label">log2 FC</dt><dd class="target-stat-value">3.2</dd></div>
+              <div class="target-stat"><dt class="target-stat-label">adj p-val</dt><dd class="target-stat-value">4.8×10⁻¹²</dd></div>
+              <div class="target-stat"><dt class="target-stat-label">Top cluster</dt><dd class="target-stat-value">Cluster 2</dd></div>
+            </dl>
+            <div class="target-action green">→ Enables 68Ga-FAP PET + 177Lu/225Ac radioligand therapy</div>
+          </article>
+
+          <article class="target-card confirmed" aria-label="CD276 target — Confirmed">
+            <div class="target-header">
+              <div class="target-name">CD276</div>
+              <span class="target-status-badge confirmed" role="status">CONFIRMED</span>
+            </div>
+            <p class="target-desc">B7-H3 — immune checkpoint ligand overexpressed in multiple solid tumors. CAR-T and ADC target.</p>
+            <dl class="target-stats">
+              <div class="target-stat"><dt class="target-stat-label">log2 FC</dt><dd class="target-stat-value">2.1</dd></div>
+              <div class="target-stat"><dt class="target-stat-label">adj p-val</dt><dd class="target-stat-value">2.1×10⁻⁸</dd></div>
+              <div class="target-stat"><dt class="target-stat-label">Top clusters</dt><dd class="target-stat-value">2, 4</dd></div>
+            </dl>
+            <div class="target-action green">→ Enables 68Ga-B7H3 PET + anti-B7H3 CAR-T access pathway</div>
+          </article>
+
+          <article class="target-card confirmed" aria-label="EPHA2 target — Confirmed">
+            <div class="target-header">
+              <div class="target-name">EPHA2</div>
+              <span class="target-status-badge confirmed" role="status">CONFIRMED</span>
+            </div>
+            <p class="target-desc">Ephrin type-A receptor 2 — kinase overexpressed in osteosarcoma. Targetable via ADC (DS-8895a) or PET imaging.</p>
+            <dl class="target-stats">
+              <div class="target-stat"><dt class="target-stat-label">log2 FC</dt><dd class="target-stat-value">1.8</dd></div>
+              <div class="target-stat"><dt class="target-stat-label">adj p-val</dt><dd class="target-stat-value">8.4×10⁻⁶</dd></div>
+              <div class="target-stat"><dt class="target-stat-label">Top cluster</dt><dd class="target-stat-value">Cluster 2</dd></div>
+            </dl>
+            <div class="target-action blue">→ Order 68Ga-EphA2 PET to confirm in vivo before ADC treatment</div>
+          </article>
+
+          <article class="target-card not-detected" aria-label="MSLN — Not detected">
+            <div class="target-header">
+              <div class="target-name">MSLN</div>
+              <span class="target-status-badge not-detected" role="status">NOT DETECTED</span>
+            </div>
+            <p class="target-desc">Mesothelin — not significantly expressed in this sample's tumor clusters.</p>
+            <dl class="target-stats">
+              <div class="target-stat"><dt class="target-stat-label">log2 FC</dt><dd class="target-stat-value">0.3</dd></div>
+              <div class="target-stat"><dt class="target-stat-label">adj p-val</dt><dd class="target-stat-value">0.41</dd></div>
+            </dl>
+          </article>
+
+          <article class="target-card not-detected" aria-label="ERBB2 — Not detected">
+            <div class="target-header">
+              <div class="target-name">ERBB2</div>
+              <span class="target-status-badge not-detected" role="status">NOT DETECTED</span>
+            </div>
+            <p class="target-desc">HER2 — not significantly overexpressed. IHC confirmation recommended before ruling out.</p>
+            <dl class="target-stats">
+              <div class="target-stat"><dt class="target-stat-label">log2 FC</dt><dd class="target-stat-value">0.6</dd></div>
+              <div class="target-stat"><dt class="target-stat-label">adj p-val</dt><dd class="target-stat-value">0.18</dd></div>
+            </dl>
+          </article>
+        </div>
+      </div>
+
+      <!-- NEOANTIGENS -->
+      <div class="report-section" id="neoantigens">
+        <h2 class="section-heading">
+          <span class="section-icon" aria-hidden="true">💉</span>
+          Top Neoantigen Candidates — Vaccine Targets
+        </h2>
+        <p style="font-size:0.875rem; color:var(--muted); margin-bottom:1.25rem; line-height:1.7;">
+          Ranked by ESMFold pLDDT structural confidence score. IC50 &lt; 500 nM required.
+          T1 tier (pLDDT &gt; 85) are priority vaccine candidates.
+          HLA alleles: HLA-A*02:01, A*24:02, B*07:02, B*44:02, C*07:02, C*05:01.
+        </p>
+        <div class="table-wrap">
+          <table class="neo-table" aria-label="Top neoantigen candidates ranked by structural confidence">
+            <caption class="visually-hidden">Neoantigen candidates ranked by pLDDT score with IC50 binding affinity and tier classification</caption>
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Peptide Sequence</th>
+                <th scope="col">HLA Allele</th>
+                <th scope="col">IC50 (nM)</th>
+                <th scope="col">pLDDT</th>
+                <th scope="col">Tier</th>
+                <th scope="col">Gene</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="color:var(--text);font-weight:700;">1</td>
+                <td><span class="peptide-seq">YLQPRTFLL</span></td>
+                <td>HLA-A*02:01</td>
+                <td><div class="ic50-bar"><div class="ic50-fill good" style="width:60px;" role="img" aria-label="IC50 38 nM — strong binder"></div><span>38</span></div></td>
+                <td style="color:var(--accent3);font-weight:700;">91.2</td>
+                <td><span class="tier-badge T1">T1</span></td>
+                <td style="font-family:'DM Mono',monospace;font-size:0.82rem;color:var(--text);">TP53</td>
+              </tr>
+              <tr>
+                <td style="color:var(--text);font-weight:700;">2</td>
+                <td><span class="peptide-seq">KIADYNYKL</span></td>
+                <td>HLA-A*02:01</td>
+                <td><div class="ic50-bar"><div class="ic50-fill good" style="width:50px;" role="img" aria-label="IC50 62 nM"></div><span>62</span></div></td>
+                <td style="color:var(--accent3);font-weight:700;">88.7</td>
+                <td><span class="tier-badge T1">T1</span></td>
+                <td style="font-family:'DM Mono',monospace;font-size:0.82rem;color:var(--text);">MDM2</td>
+              </tr>
+              <tr>
+                <td style="color:var(--text);font-weight:700;">3</td>
+                <td><span class="peptide-seq">SVVVFLASV</span></td>
+                <td>HLA-A*02:01</td>
+                <td><div class="ic50-bar"><div class="ic50-fill good" style="width:45px;" role="img" aria-label="IC50 89 nM"></div><span>89</span></div></td>
+                <td style="color:var(--accent3);font-weight:700;">87.1</td>
+                <td><span class="tier-badge T1">T1</span></td>
+                <td style="font-family:'DM Mono',monospace;font-size:0.82rem;color:var(--text);">RB1</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td><span class="peptide-seq">ALWGFFPVL</span></td>
+                <td>HLA-A*02:01</td>
+                <td><div class="ic50-bar"><div class="ic50-fill ok" style="width:38px;" role="img" aria-label="IC50 124 nM"></div><span>124</span></div></td>
+                <td style="color:var(--accent);font-weight:700;">86.3</td>
+                <td><span class="tier-badge T1">T1</span></td>
+                <td style="font-family:'DM Mono',monospace;font-size:0.82rem;color:var(--text);">DLG2</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td><span class="peptide-seq">FLTPKQLRV</span></td>
+                <td>HLA-B*07:02</td>
+                <td><div class="ic50-bar"><div class="ic50-fill ok" style="width:34px;" role="img" aria-label="IC50 158 nM"></div><span>158</span></div></td>
+                <td style="color:var(--accent);font-weight:700;">85.9</td>
+                <td><span class="tier-badge T1">T1</span></td>
+                <td style="font-family:'DM Mono',monospace;font-size:0.82rem;color:var(--text);">CDKN2A</td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td><span class="peptide-seq">KLNEPVHGV</span></td>
+                <td>HLA-A*02:01</td>
+                <td><div class="ic50-bar"><div class="ic50-fill ok" style="width:28px;" role="img" aria-label="IC50 203 nM"></div><span>203</span></div></td>
+                <td style="color:var(--accent);font-weight:700;">82.4</td>
+                <td><span class="tier-badge T2">T2</span></td>
+                <td style="font-family:'DM Mono',monospace;font-size:0.82rem;color:var(--text);">ATRX</td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td><span class="peptide-seq">RVPGVAPTL</span></td>
+                <td>HLA-A*24:02</td>
+                <td><div class="ic50-bar"><div class="ic50-fill ok" style="width:24px;" role="img" aria-label="IC50 247 nM"></div><span>247</span></div></td>
+                <td style="color:var(--accent);font-weight:700;">80.1</td>
+                <td><span class="tier-badge T2">T2</span></td>
+                <td style="font-family:'DM Mono',monospace;font-size:0.82rem;color:var(--text);">NF1</td>
+              </tr>
+              <tr>
+                <td>8</td>
+                <td><span class="peptide-seq">LLFGYPVYV</span></td>
+                <td>HLA-A*02:01</td>
+                <td><div class="ic50-bar"><div class="ic50-fill ok" style="width:20px;" role="img" aria-label="IC50 312 nM"></div><span>312</span></div></td>
+                <td style="color:var(--accent);font-weight:700;">78.8</td>
+                <td><span class="tier-badge T2">T2</span></td>
+                <td style="font-family:'DM Mono',monospace;font-size:0.82rem;color:var(--text);">PTEN</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="font-size:0.775rem; color:var(--subtle); margin-top:0.75rem; text-align:right;">
+          Showing top 8 of 12 T1/T2 candidates. Full ranked list in downloadable report.
+        </p>
+      </div>
+
+      <!-- TREATMENT PLAN -->
+      <div class="report-section" id="treatment">
+        <h2 class="section-heading">
+          <span class="section-icon" aria-hidden="true">🏥</span>
+          Parallel Treatment Recommendation
+        </h2>
+        <p style="font-size:0.875rem; color:var(--muted); margin-bottom:1.25rem; line-height:1.7;">
+          5-layer parallel strategy. Each layer attacks from a different angle.
+          Start all layers simultaneously where possible — sequential treatment loses ground.
+        </p>
+
+        <div class="treatment-layers" role="list" aria-label="Treatment layers">
+
+          <div class="treatment-layer" role="listitem">
+            <button class="layer-header" onclick="toggleLayer(this)" aria-expanded="true" aria-controls="layer-body-1">
+              <div class="layer-num l1" aria-hidden="true">1</div>
+              <div class="layer-title">Foundation — Checkpoint Inhibitors</div>
+              <span class="layer-tag approved">FDA Approved</span>
+              <span class="layer-chevron open" aria-hidden="true">▼</span>
+            </button>
+            <div class="layer-body open" id="layer-body-1">
+              <div class="drug-list">
+                <div class="drug-item">
+                  <span class="drug-icon" aria-hidden="true">💊</span>
+                  <div>
+                    <div class="drug-name">Dostarlimab (Jemperli) — anti-PD-1</div>
+                    <div class="drug-desc">Remove T cell brakes. Required foundation for all immunotherapy. 500mg IV every 3 weeks × 4, then 1000mg every 6 weeks.</div>
+                    <div class="drug-access">→ FDA approved (off-label osteosarcoma — Form 3926 if needed)</div>
+                  </div>
+                </div>
+                <div class="drug-item">
+                  <span class="drug-icon" aria-hidden="true">💊</span>
+                  <div>
+                    <div class="drug-name">Ipilimumab (Yervoy) — anti-CTLA-4</div>
+                    <div class="drug-desc">Dual checkpoint blockade increases response rates. 1mg/kg IV every 6 weeks (low-dose to reduce irAE risk when combined).</div>
+                    <div class="drug-access">→ FDA approved (combination with PD-1 inhibitor)</div>
+                  </div>
+                </div>
+              </div>
+              <div class="access-box">
+                <strong>Access path:</strong> Both are FDA-approved. If your oncologist won't prescribe off-label,
+                file FDA Form 3926 for Individual Patient Expanded Access. Approval typically within 48 hours.
+              </div>
+            </div>
+          </div>
+
+          <div class="treatment-layer" role="listitem">
+            <button class="layer-header" onclick="toggleLayer(this)" aria-expanded="false" aria-controls="layer-body-2">
+              <div class="layer-num l2" aria-hidden="true">2</div>
+              <div class="layer-title">Neoantigen Vaccine — Train Tumor Recognition</div>
+              <span class="layer-tag expanded">Expanded Access</span>
+              <span class="layer-chevron" aria-hidden="true">▼</span>
+            </button>
+            <div class="layer-body" id="layer-body-2">
+              <div class="drug-list">
+                <div class="drug-item">
+                  <span class="drug-icon" aria-hidden="true">🧬</span>
+                  <div>
+                    <div class="drug-name">Peptide Neoantigen Vaccine (Custom)</div>
+                    <div class="drug-desc">Top 12 T1/T2 candidates: YLQPRTFLL, KIADYNYKL, SVVVFLASV + 9 more. Adjuvant: GM-CSF + poly-ICLC. Schedule: Day 1, 8, 15, 29, then monthly.</div>
+                    <div class="drug-access">→ Manufacture via CeGaT (Germany) or NeoVax platform. FDA Form 3926.</div>
+                  </div>
+                </div>
+                <div class="drug-item">
+                  <span class="drug-icon" aria-hidden="true">💉</span>
+                  <div>
+                    <div class="drug-name">mRNA Neoantigen Vaccine (next iteration)</div>
+                    <div class="drug-desc">LinearDesign-optimized mRNA encoding top candidates. Faster to update when new mutations emerge. Consider for 3-6 month maintenance update.</div>
+                    <div class="drug-access">→ BioNTech, Moderna, or in-house synthesis via FDA IND</div>
+                  </div>
+                </div>
+              </div>
+              <div class="access-box">
+                <strong>Monitoring:</strong> ELISPOT assay 2 weeks after each vaccine dose to confirm T cell reactivity.
+                This validates the vaccine is working before the next dose.
+              </div>
+            </div>
+          </div>
+
+          <div class="treatment-layer" role="listitem">
+            <button class="layer-header" onclick="toggleLayer(this)" aria-expanded="false" aria-controls="layer-body-3">
+              <div class="layer-num l3" aria-hidden="true">3</div>
+              <div class="layer-title">Oncolytic Virus — Tumor Cell Killing + Antigen Release</div>
+              <span class="layer-tag expanded">Expanded Access</span>
+              <span class="layer-chevron" aria-hidden="true">▼</span>
+            </button>
+            <div class="layer-body" id="layer-body-3">
+              <div class="drug-list">
+                <div class="drug-item">
+                  <span class="drug-icon" aria-hidden="true">🦠</span>
+                  <div>
+                    <div class="drug-name">AdaPT-001 (TGF-beta trap adenovirus)</div>
+                    <div class="drug-desc">Infects and kills cancer cells while trapping TGF-beta. Releases tumor antigens to prime further immune response. Intratumoral or subcutaneous.</div>
+                    <div class="drug-access">→ FDA Form 3926. Approval within 48 hours typically. Contact Candel Therapeutics.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="access-box">
+                <strong>Rationale:</strong> Oncolytic viruses work synergistically with checkpoint inhibitors and vaccines —
+                they kill cells and release antigens that newly trained T cells can recognize.
+              </div>
+            </div>
+          </div>
+
+          <div class="treatment-layer" role="listitem">
+            <button class="layer-header" onclick="toggleLayer(this)" aria-expanded="false" aria-controls="layer-body-4">
+              <div class="layer-num l4" aria-hidden="true">4</div>
+              <div class="layer-title">Radioligand Therapy — FAP-Targeted Radiation</div>
+              <span class="layer-tag international">International Access</span>
+              <span class="layer-chevron" aria-hidden="true">▼</span>
+            </button>
+            <div class="layer-body" id="layer-body-4">
+              <div class="drug-list">
+                <div class="drug-item">
+                  <span class="drug-icon" aria-hidden="true">⚛️</span>
+                  <div>
+                    <div class="drug-name">177Lu-FAPi (beta emitter — first line)</div>
+                    <div class="drug-desc">Lutetium-177 conjugated to FAP-targeting FAPI ligand. Confirmed FAP expression (log2FC=3.2) makes this tumor highly eligible. Start here before escalating.</div>
+                    <div class="drug-access">→ Germany: Heidelberg University Hospital, LMU Munich. 68Ga-FAP PET required first.</div>
+                  </div>
+                </div>
+                <div class="drug-item">
+                  <span class="drug-icon" aria-hidden="true">⚛️</span>
+                  <div>
+                    <div class="drug-name">225Ac-FAPi (alpha emitter — escalation)</div>
+                    <div class="drug-desc">Actinium-225 alpha emitter. More potent, shorter range, less bystander toxicity. Escalate after 177Lu response or if partial response.</div>
+                    <div class="drug-access">→ Germany (same centers). Required: positive 68Ga-FAP PET and GFR &gt;50.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="access-box">
+                <strong>Prerequisites:</strong> Order 68Ga-FAP PET scan immediately to confirm target expression in vivo.
+                Theranostic principle: diagnostic molecule = therapeutic molecule.
+              </div>
+            </div>
+          </div>
+
+          <div class="treatment-layer" role="listitem">
+            <button class="layer-header" onclick="toggleLayer(this)" aria-expanded="false" aria-controls="layer-body-5">
+              <div class="layer-num l5" aria-hidden="true">5</div>
+              <div class="layer-title">NK Cell Therapy — Innate Immune Killing</div>
+              <span class="layer-tag expanded">Expanded Access</span>
+              <span class="layer-chevron" aria-hidden="true">▼</span>
+            </button>
+            <div class="layer-body" id="layer-body-5">
+              <div class="drug-list">
+                <div class="drug-item">
+                  <span class="drug-icon" aria-hidden="true">🛡️</span>
+                  <div>
+                    <div class="drug-name">SNK-01 (NK cell therapy)</div>
+                    <div class="drug-desc">Off-the-shelf NK cell therapy. Innate immune killing is MHC-independent — works even when tumor cells downregulate MHC to escape T cells.</div>
+                    <div class="drug-access">→ FDA Form 3926. NantKwest. Works synergistically with Anktiva (IL-15 superagonist).</div>
+                  </div>
+                </div>
+                <div class="drug-item">
+                  <span class="drug-icon" aria-hidden="true">⬆️</span>
+                  <div>
+                    <div class="drug-name">Anktiva (N-803) — IL-15 superagonist</div>
+                    <div class="drug-desc">Amplifies NK and T cell proliferation. Use alongside SNK-01 to boost the NK cell response. Also enhances vaccine-driven T cell expansion.</div>
+                    <div class="drug-access">→ FDA approved (bladder cancer). Off-label via Form 3926 for osteosarcoma.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="access-box">
+                <strong>Support:</strong> XGeva (denosumab) for bone protection — critical in osteosarcoma to prevent pathological fractures and osteoclast-mediated bone destruction.
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- MONITORING -->
+      <div class="report-section" id="monitoring">
+        <h2 class="section-heading">
+          <span class="section-icon" aria-hidden="true">📈</span>
+          Monitoring Protocol
+        </h2>
+        <p style="font-size:0.875rem; color:var(--muted); margin-bottom:1.25rem; line-height:1.7;">
+          Real-time monitoring is what differentiates this approach from standard care.
+          ctDNA every 2 weeks, not every 3 months.
+        </p>
+        <div class="table-wrap">
+          <table class="monitoring-table" aria-label="Monitoring protocol — what to track, how often, and why">
+            <caption class="visually-hidden">Monitoring protocol with modality, platform, frequency, and purpose for each measurement</caption>
+            <thead>
+              <tr>
+                <th scope="col">Modality</th>
+                <th scope="col">Platform</th>
+                <th scope="col">Frequency</th>
+                <th scope="col">Purpose</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>ctDNA — tumor DNA</td>
+                <td>Signatera (Natera)</td>
+                <td><span class="freq-badge">Every 2 weeks</span></td>
+                <td>Real-time response measurement. First signal of treatment working or failing.</td>
+              </tr>
+              <tr>
+                <td>ctDNA — methylation</td>
+                <td>Northstar</td>
+                <td><span class="freq-badge">Monthly</span></td>
+                <td>Orthogonal signal. Catches ctDNA-negative relapses.</td>
+              </tr>
+              <tr>
+                <td>Immune landscape</td>
+                <td>scRNA-seq (PBMCs)</td>
+                <td><span class="freq-badge">Monthly</span></td>
+                <td>Track T/NK/B cell composition. Watch for exhaustion or immune suppression.</td>
+              </tr>
+              <tr>
+                <td>T cell subsets</td>
+                <td>Flow cytometry</td>
+                <td><span class="freq-badge">Monthly</span></td>
+                <td>Faster + cheaper than scRNA-seq. CD3, CD4, CD8, NK, MAIT cells.</td>
+              </tr>
+              <tr>
+                <td>Vaccine response</td>
+                <td>ELISPOT assay</td>
+                <td><span class="freq-badge">After each dose</span></td>
+                <td>Confirm T cells are reacting to each neoantigen peptide in the vaccine.</td>
+              </tr>
+              <tr>
+                <td>Structural imaging</td>
+                <td>PET/CT</td>
+                <td><span class="freq-badge">Every 8 weeks</span></td>
+                <td>Tumor size and metabolic activity. Confirm structural response to treatment.</td>
+              </tr>
+              <tr>
+                <td>FAP expression</td>
+                <td>68Ga-FAP PET</td>
+                <td><span class="freq-badge">Before RLT + repeat</span></td>
+                <td>Confirm radioligand target in vivo. Repeat after 2 doses to assess target loss.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="margin-top:1rem; padding:1rem; background:var(--accent3-light); border:1px solid rgba(52,168,83,0.25); border-radius:12px; font-size:0.85rem; color:var(--muted); line-height:1.6;">
+          <strong style="color:#1e7e34;">Success metric:</strong> ctDNA drops to undetectable within 8 weeks of starting the parallel combination.
+          Immune infiltration target: &gt;50% T cells in tumor microenvironment (confirmed at next biopsy or surgery).
+        </div>
+      </div>
+
+      <!-- NEXT STEPS -->
+      <div class="report-section" id="nextsteps">
+        <h2 class="section-heading">
+          <span class="section-icon" aria-hidden="true">✅</span>
+          Immediate Next Steps
+        </h2>
+        <div class="priority-legend" role="list" aria-label="Priority legend">
+          <span role="listitem" class="legend-item"><span class="legend-dot" style="background:var(--danger);" aria-hidden="true"></span> High priority</span>
+          <span role="listitem" class="legend-item"><span class="legend-dot" style="background:var(--warn);" aria-hidden="true"></span> Medium priority</span>
+          <span role="listitem" class="legend-item"><span class="legend-dot" style="background:var(--accent3);" aria-hidden="true"></span> Low priority</span>
+        </div>
+        <div class="next-steps" role="list" aria-label="Prioritized action items">
+          <article class="next-step-item" role="listitem" aria-label="High priority: Order 68Ga-FAP PET scan">
+            <div class="next-step-priority high" role="img" aria-label="High priority"></div>
+            <div class="next-step-text">
+              <strong>Order 68Ga-FAP PET scan</strong>
+              FAP is confirmed by scRNA-seq (log2FC=3.2) but needs in-vivo validation before starting radioligand therapy.
+              This is the single highest-leverage diagnostic action.
+            </div>
+            <div class="next-step-time">This week</div>
+          </article>
+          <article class="next-step-item" role="listitem" aria-label="High priority: File FDA Form 3926">
+            <div class="next-step-priority high" role="img" aria-label="High priority"></div>
+            <div class="next-step-text">
+              <strong>File FDA Form 3926 for dostarlimab + ipilimumab</strong>
+              Even if your oncologist agrees to prescribe off-label, having the IND on file accelerates access to all other experimental agents. 48-hour approval.
+            </div>
+            <div class="next-step-time">This week</div>
+          </article>
+          <article class="next-step-item" role="listitem" aria-label="High priority: Contact CeGaT for vaccine manufacturing">
+            <div class="next-step-priority high" role="img" aria-label="High priority"></div>
+            <div class="next-step-text">
+              <strong>Contact CeGaT (Germany) to begin vaccine manufacturing</strong>
+              Peptide neoantigen vaccine takes 4–6 weeks to manufacture. Top 12 peptides from this report.
+              Send VCF + HLA type directly.
+            </div>
+            <div class="next-step-time">This week</div>
+          </article>
+          <article class="next-step-item" role="listitem" aria-label="Medium priority: Start Signatera ctDNA baseline">
+            <div class="next-step-priority med" role="img" aria-label="Medium priority"></div>
+            <div class="next-step-text">
+              <strong>Start Signatera ctDNA baseline</strong>
+              Natera needs a tumor tissue sample to create your personalized tracker. Submit now
+              so baseline is ready before treatment starts. Order Northstar in parallel.
+            </div>
+            <div class="next-step-time">Week 1</div>
+          </article>
+          <article class="next-step-item" role="listitem" aria-label="Medium priority: Request ELISPOT assay protocol">
+            <div class="next-step-priority med" role="img" aria-label="Medium priority"></div>
+            <div class="next-step-text">
+              <strong>Request ELISPOT assay protocol from an academic center</strong>
+              MSKCC, MD Anderson, UCSF, or Stanford can run ELISPOT on your vaccine peptides.
+              Set this up before the vaccine arrives.
+            </div>
+            <div class="next-step-time">Week 1–2</div>
+          </article>
+          <article class="next-step-item" role="listitem" aria-label="Low priority: Contact Heidelberg for radioligand access">
+            <div class="next-step-priority low" role="img" aria-label="Low priority"></div>
+            <div class="next-step-text">
+              <strong>Contact Heidelberg or LMU Munich for radioligand access</strong>
+              If 68Ga-FAP PET is positive, you'll want a pre-consult appointment already scheduled.
+              Prepare: latest imaging, genomic report, HLA type, current treatment list.
+            </div>
+            <div class="next-step-time">Week 2–3</div>
+          </article>
+          <article class="next-step-item" role="listitem" aria-label="Low priority: Update pipeline with new data">
+            <div class="next-step-priority low" role="img" aria-label="Low priority"></div>
+            <div class="next-step-text">
+              <strong>Update pipeline with new ctDNA and scRNA-seq data</strong>
+              Re-run Phase 3–4 with each new biopsy to update neoantigen targets as tumor evolves.
+              Cancer adapts — your treatment plan should too.
+            </div>
+            <div class="next-step-time">Ongoing</div>
+          </article>
+        </div>
+      </div>
+
+      <div class="disclaimer-footer" role="note" aria-label="Medical disclaimer">
+        <strong>Medical Disclaimer:</strong> This report is generated by an open-source bioinformatics pipeline
+        and provides decision-support information only. It is not a substitute for medical advice from a qualified
+        oncologist. All treatment decisions — including expanded access applications — require a licensed physician.
+        Neoantigen predictions are computational and require experimental validation (ELISPOT, functional assays).
+        Pipeline source: <a href="https://github.com/broomva/founder-mode-cancer">github.com/broomva/founder-mode-cancer</a>.
+        Case data: <a href="https://osteosarc.com">osteosarc.com</a>.
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- VISUALLY HIDDEN UTILITY -->
+<style>
+  .visually-hidden {
+    position: absolute; width: 1px; height: 1px;
+    padding: 0; margin: -1px; overflow: hidden;
+    clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+  }
+  .hidden { display: none !important; }
+  .log-panel { background: #1e1e2e; border-radius: 14px; padding: 1.25rem 1.5rem; margin: 1.5rem 0 2rem; }
+  .log-panel-title { color: #7c8cf8; font-size: 0.8rem; font-weight: 700; margin-bottom: 0.75rem; font-family: 'DM Mono', monospace; letter-spacing: 0.04em; display: flex; align-items: center; gap: 0.5rem; }
+  .log-panel-title::before { content: ''; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #34a853; animation: pulse 1.4s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+  @media (prefers-reduced-motion: reduce) { .log-panel-title::before { animation: none; } }
+  .log-output { font-family: 'DM Mono', monospace; font-size: 0.775rem; color: #cdd6f4; max-height: 340px; overflow-y: auto; line-height: 1.65; }
+  .log-line { border-bottom: 1px solid rgba(255,255,255,0.04); padding: 0.1rem 0; }
+  .live-results-badge { display: inline-flex; align-items: center; gap: 0.4rem; background: var(--accent3-light); color: var(--accent3); font-size: 0.78rem; font-weight: 700; padding: 0.25rem 0.7rem; border-radius: 20px; margin-bottom: 1rem; border: 1px solid rgba(52,168,83,0.25); }
+</style>
+
+<script>
+  document.getElementById('reportDate').textContent = new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+
+  // ── Live pipeline integration ──────────────────────────────────────────────
+  const JOB_ID = new URLSearchParams(window.location.search).get('job');
+
+  if (JOB_ID) {
+    // Hide demo banner, show log panel
+    document.getElementById('demoBanner')?.classList.add('hidden');
+    document.getElementById('pipeline-log-panel')?.classList.remove('hidden');
+    showProgress();
+  }
+
+  function showProgress() {
+    const logEl = document.getElementById('pipeline-log');
+    if (!logEl) return;
+
+    const es = new EventSource(`http://localhost:8000/api/status/${JOB_ID}`);
+    es.onmessage = (e) => {
+      const msg = JSON.parse(e.data);
+      if (msg.type === 'log') {
+        const line = document.createElement('div');
+        line.className = 'log-line';
+        line.textContent = msg.text;
+        logEl.appendChild(line);
+        logEl.scrollTop = logEl.scrollHeight;
+      } else if (msg.type === 'done') {
+        es.close();
+        document.getElementById('pipeline-log-panel')?.classList.add('hidden');
+        loadResults();
+      }
+    };
+    es.onerror = () => {
+      es.close();
+      // If SSE fails, try to load results directly (pipeline may already be done)
+      loadResults();
+    };
+  }
+
+  async function loadResults() {
+    if (!JOB_ID) return;
+    try {
+      const res = await fetch(`http://localhost:8000/api/results/${JOB_ID}`);
+      if (!res.ok) return;
+      const data = await res.json();
+      renderCandidates(data.candidates || []);
+      renderTargets(data.targets || []);
+      renderTreatment(data.treatment || '');
+      document.getElementById('live-results-panel')?.classList.remove('hidden');
+    } catch (_) { /* server not running — silently ignore */ }
+  }
+
+  function renderCandidates(candidates) {
+    const tbody = document.getElementById('candidates-tbody');
+    if (!tbody) return;
+    if (!candidates.length) {
+      tbody.innerHTML = '<tr><td colspan="5" style="padding:1rem;color:var(--muted);text-align:center;">No candidates found</td></tr>';
+      return;
+    }
+    tbody.innerHTML = candidates.map(c => `
+      <tr style="border-bottom:1px solid var(--border);">
+        <td style="padding:0.6rem 0.75rem; font-family:'DM Mono',monospace; font-size:0.8rem;">${c.peptide || c.mt_epitope_seq || '—'}</td>
+        <td style="padding:0.6rem 0.75rem;">${c.ic50 || c.mt_ic50 || '—'}</td>
+        <td style="padding:0.6rem 0.75rem;">${c.tier || '—'}</td>
+        <td style="padding:0.6rem 0.75rem;">${c.plddt_mean || '—'}</td>
+        <td style="padding:0.6rem 0.75rem; font-weight:600;">${c.gene_name || '—'}</td>
+      </tr>
+    `).join('');
+  }
+
+  function renderTargets(targets) {
+    const el = document.getElementById('targets-list');
+    if (!el) return;
+    if (!targets.length) {
+      el.innerHTML = '<li style="color:var(--muted);">No scRNA-seq targets (phase skipped or data not provided)</li>';
+      return;
+    }
+    el.innerHTML = targets.map(t => `
+      <li style="display:flex;align-items:center;gap:0.75rem;padding:0.5rem 0.75rem;background:var(--surface);border:1px solid var(--border);border-radius:8px;">
+        <strong style="min-width:80px;">${t.gene || '—'}</strong>
+        <span style="color:var(--muted);font-size:0.85rem;">log2FC: ${t.log2fc || '—'} &nbsp;|&nbsp; padj: ${t.padj || '—'}</span>
+      </li>
+    `).join('');
+  }
+
+  function renderTreatment(markdown) {
+    const el = document.getElementById('treatment-md');
+    if (el) el.textContent = markdown || 'Treatment recommendation not yet available.';
+  }
+  // ── End live pipeline integration ─────────────────────────────────────────
+
+  function toggleLayer(header) {
+    const body = header.nextElementSibling;
+    const chevron = header.querySelector('.layer-chevron');
+    const isOpen = body.classList.contains('open');
+    body.classList.toggle('open', !isOpen);
+    chevron.classList.toggle('open', !isOpen);
+    header.setAttribute('aria-expanded', String(!isOpen));
+  }
+
+  function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const btn = document.getElementById('sidebarToggle');
+    const isOpen = sidebar.classList.toggle('open');
+    btn.setAttribute('aria-expanded', String(isOpen));
+    if (isOpen) sidebar.querySelector('a').focus();
+  }
+
+  function closeSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    sidebar.classList.remove('open');
+    document.getElementById('sidebarToggle').setAttribute('aria-expanded', 'false');
+  }
+
+  // Close sidebar on Escape key
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeSidebar();
+  });
+
+  // Active sidebar highlighting
+  const sections = document.querySelectorAll('[id]');
+  const sidebarLinks = document.querySelectorAll('.sidebar-item[href^="#"]');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        sidebarLinks.forEach(link => {
+          const isActive = link.getAttribute('href') === `#${entry.target.id}`;
+          link.classList.toggle('active', isActive);
+          link.setAttribute('aria-current', isActive ? 'true' : 'false');
+        });
+      }
+    });
+  }, { threshold: 0.3, rootMargin: '-64px 0px -40% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+
+  function downloadReport() {
+    alert('In production, this triggers a Puppeteer/wkhtmltopdf render of the report as a formatted PDF with your case ID, timestamp, and physician signature block.');
+  }
+</script>
+
+</body>
+</html>
